@@ -43,6 +43,9 @@ test("quote button sends the carton size", async ({ page }) => {
   await expect(result(page)).toContainText("3,000 ft³");
   await page.getByRole("link", { name: "Quote cartons at this size" }).click();
   await expect(page).toHaveURL(/\/quote-test\/$/);
+  await expect(page.getByTestId("prefill-status")).toHaveText(
+    "Pre-filled by box-volume-calculator",
+  );
   const payload = JSON.parse((await page.getByTestId("prefill-payload").textContent())!);
   expect(payload).toMatchObject({
     length: "24",
