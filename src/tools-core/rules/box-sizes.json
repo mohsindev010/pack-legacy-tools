@@ -1,0 +1,707 @@
+{
+  "version": "2026-11-12",
+  "note": "Inside dimensions in inches. Stock RSC and mailer sizes are as printed by Uline (inside dimensions). USPS flat-rate sizes verbatim from Notice 123 (inside and outside). Pack Legacy sizes are added as family pl-product when supplied.",
+  "boxes": {
+    "rsc-4x4x4": {
+      "id": "rsc-4x4x4",
+      "family": "rsc",
+      "label": "4 x 4 x 4 in shipping box (RSC)",
+      "insideIn": [4, 4, 4],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-5x5x5": {
+      "id": "rsc-5x5x5",
+      "family": "rsc",
+      "label": "5 x 5 x 5 in shipping box (RSC)",
+      "insideIn": [5, 5, 5],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-6x4x4": {
+      "id": "rsc-6x4x4",
+      "family": "rsc",
+      "label": "6 x 4 x 4 in shipping box (RSC)",
+      "insideIn": [6, 4, 4],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-6x6x4": {
+      "id": "rsc-6x6x4",
+      "family": "rsc",
+      "label": "6 x 6 x 4 in shipping box (RSC)",
+      "insideIn": [6, 6, 4],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-6x6x6": {
+      "id": "rsc-6x6x6",
+      "family": "rsc",
+      "label": "6 x 6 x 6 in shipping box (RSC)",
+      "insideIn": [6, 6, 6],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-8x6x4": {
+      "id": "rsc-8x6x4",
+      "family": "rsc",
+      "label": "8 x 6 x 4 in shipping box (RSC)",
+      "insideIn": [8, 6, 4],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-8x8x4": {
+      "id": "rsc-8x8x4",
+      "family": "rsc",
+      "label": "8 x 8 x 4 in shipping box (RSC)",
+      "insideIn": [8, 8, 4],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-8x8x8": {
+      "id": "rsc-8x8x8",
+      "family": "rsc",
+      "label": "8 x 8 x 8 in shipping box (RSC)",
+      "insideIn": [8, 8, 8],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-9x9x9": {
+      "id": "rsc-9x9x9",
+      "family": "rsc",
+      "label": "9 x 9 x 9 in shipping box (RSC)",
+      "insideIn": [9, 9, 9],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-10x8x6": {
+      "id": "rsc-10x8x6",
+      "family": "rsc",
+      "label": "10 x 8 x 6 in shipping box (RSC)",
+      "insideIn": [10, 8, 6],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-10x10x10": {
+      "id": "rsc-10x10x10",
+      "family": "rsc",
+      "label": "10 x 10 x 10 in shipping box (RSC)",
+      "insideIn": [10, 10, 10],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-12x6x6": {
+      "id": "rsc-12x6x6",
+      "family": "rsc",
+      "label": "12 x 6 x 6 in shipping box (RSC)",
+      "insideIn": [12, 6, 6],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-12x9x4": {
+      "id": "rsc-12x9x4",
+      "family": "rsc",
+      "label": "12 x 9 x 4 in shipping box (RSC)",
+      "insideIn": [12, 9, 4],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-12x9x6": {
+      "id": "rsc-12x9x6",
+      "family": "rsc",
+      "label": "12 x 9 x 6 in shipping box (RSC)",
+      "insideIn": [12, 9, 6],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-12x10x6": {
+      "id": "rsc-12x10x6",
+      "family": "rsc",
+      "label": "12 x 10 x 6 in shipping box (RSC)",
+      "insideIn": [12, 10, 6],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-12x10x8": {
+      "id": "rsc-12x10x8",
+      "family": "rsc",
+      "label": "12 x 10 x 8 in shipping box (RSC)",
+      "insideIn": [12, 10, 8],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-12x12x4": {
+      "id": "rsc-12x12x4",
+      "family": "rsc",
+      "label": "12 x 12 x 4 in shipping box (RSC)",
+      "insideIn": [12, 12, 4],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-12x12x6": {
+      "id": "rsc-12x12x6",
+      "family": "rsc",
+      "label": "12 x 12 x 6 in shipping box (RSC)",
+      "insideIn": [12, 12, 6],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-12x12x8": {
+      "id": "rsc-12x12x8",
+      "family": "rsc",
+      "label": "12 x 12 x 8 in shipping box (RSC)",
+      "insideIn": [12, 12, 8],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-12x12x10": {
+      "id": "rsc-12x12x10",
+      "family": "rsc",
+      "label": "12 x 12 x 10 in shipping box (RSC)",
+      "insideIn": [12, 12, 10],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-12x12x12": {
+      "id": "rsc-12x12x12",
+      "family": "rsc",
+      "label": "12 x 12 x 12 in shipping box (RSC)",
+      "insideIn": [12, 12, 12],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-14x10x6": {
+      "id": "rsc-14x10x6",
+      "family": "rsc",
+      "label": "14 x 10 x 6 in shipping box (RSC)",
+      "insideIn": [14, 10, 6],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-14x10x10": {
+      "id": "rsc-14x10x10",
+      "family": "rsc",
+      "label": "14 x 10 x 10 in shipping box (RSC)",
+      "insideIn": [14, 10, 10],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-14x14x14": {
+      "id": "rsc-14x14x14",
+      "family": "rsc",
+      "label": "14 x 14 x 14 in shipping box (RSC)",
+      "insideIn": [14, 14, 14],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-15x15x15": {
+      "id": "rsc-15x15x15",
+      "family": "rsc",
+      "label": "15 x 15 x 15 in shipping box (RSC)",
+      "insideIn": [15, 15, 15],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-16x12x8": {
+      "id": "rsc-16x12x8",
+      "family": "rsc",
+      "label": "16 x 12 x 8 in shipping box (RSC)",
+      "insideIn": [16, 12, 8],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-16x12x10": {
+      "id": "rsc-16x12x10",
+      "family": "rsc",
+      "label": "16 x 12 x 10 in shipping box (RSC)",
+      "insideIn": [16, 12, 10],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-16x12x12": {
+      "id": "rsc-16x12x12",
+      "family": "rsc",
+      "label": "16 x 12 x 12 in shipping box (RSC)",
+      "insideIn": [16, 12, 12],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-16x16x8": {
+      "id": "rsc-16x16x8",
+      "family": "rsc",
+      "label": "16 x 16 x 8 in shipping box (RSC)",
+      "insideIn": [16, 16, 8],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-16x16x16": {
+      "id": "rsc-16x16x16",
+      "family": "rsc",
+      "label": "16 x 16 x 16 in shipping box (RSC)",
+      "insideIn": [16, 16, 16],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-18x12x6": {
+      "id": "rsc-18x12x6",
+      "family": "rsc",
+      "label": "18 x 12 x 6 in shipping box (RSC)",
+      "insideIn": [18, 12, 6],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-18x12x8": {
+      "id": "rsc-18x12x8",
+      "family": "rsc",
+      "label": "18 x 12 x 8 in shipping box (RSC)",
+      "insideIn": [18, 12, 8],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-18x12x10": {
+      "id": "rsc-18x12x10",
+      "family": "rsc",
+      "label": "18 x 12 x 10 in shipping box (RSC)",
+      "insideIn": [18, 12, 10],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-18x12x12": {
+      "id": "rsc-18x12x12",
+      "family": "rsc",
+      "label": "18 x 12 x 12 in shipping box (RSC)",
+      "insideIn": [18, 12, 12],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-18x14x12": {
+      "id": "rsc-18x14x12",
+      "family": "rsc",
+      "label": "18 x 14 x 12 in shipping box (RSC)",
+      "insideIn": [18, 14, 12],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-18x18x12": {
+      "id": "rsc-18x18x12",
+      "family": "rsc",
+      "label": "18 x 18 x 12 in shipping box (RSC)",
+      "insideIn": [18, 18, 12],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-18x18x18": {
+      "id": "rsc-18x18x18",
+      "family": "rsc",
+      "label": "18 x 18 x 18 in shipping box (RSC)",
+      "insideIn": [18, 18, 18],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-20x12x12": {
+      "id": "rsc-20x12x12",
+      "family": "rsc",
+      "label": "20 x 12 x 12 in shipping box (RSC)",
+      "insideIn": [20, 12, 12],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-20x14x6": {
+      "id": "rsc-20x14x6",
+      "family": "rsc",
+      "label": "20 x 14 x 6 in shipping box (RSC)",
+      "insideIn": [20, 14, 6],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-20x14x12": {
+      "id": "rsc-20x14x12",
+      "family": "rsc",
+      "label": "20 x 14 x 12 in shipping box (RSC)",
+      "insideIn": [20, 14, 12],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-20x16x14": {
+      "id": "rsc-20x16x14",
+      "family": "rsc",
+      "label": "20 x 16 x 14 in shipping box (RSC)",
+      "insideIn": [20, 16, 14],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-20x20x12": {
+      "id": "rsc-20x20x12",
+      "family": "rsc",
+      "label": "20 x 20 x 12 in shipping box (RSC)",
+      "insideIn": [20, 20, 12],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-20x20x20": {
+      "id": "rsc-20x20x20",
+      "family": "rsc",
+      "label": "20 x 20 x 20 in shipping box (RSC)",
+      "insideIn": [20, 20, 20],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-24x12x12": {
+      "id": "rsc-24x12x12",
+      "family": "rsc",
+      "label": "24 x 12 x 12 in shipping box (RSC)",
+      "insideIn": [24, 12, 12],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-24x16x16": {
+      "id": "rsc-24x16x16",
+      "family": "rsc",
+      "label": "24 x 16 x 16 in shipping box (RSC)",
+      "insideIn": [24, 16, 16],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-24x18x12": {
+      "id": "rsc-24x18x12",
+      "family": "rsc",
+      "label": "24 x 18 x 12 in shipping box (RSC)",
+      "insideIn": [24, 18, 12],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-24x18x18": {
+      "id": "rsc-24x18x18",
+      "family": "rsc",
+      "label": "24 x 18 x 18 in shipping box (RSC)",
+      "insideIn": [24, 18, 18],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-24x24x12": {
+      "id": "rsc-24x24x12",
+      "family": "rsc",
+      "label": "24 x 24 x 12 in shipping box (RSC)",
+      "insideIn": [24, 24, 12],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "rsc-24x24x24": {
+      "id": "rsc-24x24x24",
+      "family": "rsc",
+      "label": "24 x 24 x 24 in shipping box (RSC)",
+      "insideIn": [24, 24, 24],
+      "source": "Uline: Best Selling Boxes (200 lb test corrugated), column \"INSIDE DIMENSIONS L x W x H\"",
+      "sourceUrl": "https://www.uline.com/Promotion/MonthlySpecial.aspx?pagename=sp000_Best_Selling_Boxes.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "mailer-3x2x2": {
+      "id": "mailer-3x2x2",
+      "family": "mailer",
+      "label": "3 x 2 x 2 in mailer box",
+      "insideIn": [3, 2, 2],
+      "source": "Uline: White Indestructo Mailers, column \"INSIDE DIM. L x W x H\"",
+      "sourceUrl": "https://www.uline.com/BL_1351/White-Indestructo-Mailers",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "mailer-4x4x2": {
+      "id": "mailer-4x4x2",
+      "family": "mailer",
+      "label": "4 x 4 x 2 in mailer box",
+      "insideIn": [4, 4, 2],
+      "source": "Uline: White Indestructo Mailers, column \"INSIDE DIM. L x W x H\"",
+      "sourceUrl": "https://www.uline.com/BL_1351/White-Indestructo-Mailers",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "mailer-4.375x4.375x2": {
+      "id": "mailer-4.375x4.375x2",
+      "family": "mailer",
+      "label": "4 3/8 x 4 3/8 x 2 in mailer box",
+      "insideIn": [4.375, 4.375, 2],
+      "source": "Uline: White Indestructo Mailers, column \"INSIDE DIM. L x W x H\"",
+      "sourceUrl": "https://www.uline.com/BL_1351/White-Indestructo-Mailers",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "mailer-5x5x3": {
+      "id": "mailer-5x5x3",
+      "family": "mailer",
+      "label": "5 x 5 x 3 in mailer box",
+      "insideIn": [5, 5, 3],
+      "source": "Uline: White Indestructo Mailers, column \"INSIDE DIM. L x W x H\"",
+      "sourceUrl": "https://www.uline.com/BL_1351/White-Indestructo-Mailers",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "mailer-6x4x4": {
+      "id": "mailer-6x4x4",
+      "family": "mailer",
+      "label": "6 x 4 x 4 in mailer box",
+      "insideIn": [6, 4, 4],
+      "source": "Uline: White Indestructo Mailers, column \"INSIDE DIM. L x W x H\"",
+      "sourceUrl": "https://www.uline.com/BL_1351/White-Indestructo-Mailers",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "mailer-6.5x4.875x3.75": {
+      "id": "mailer-6.5x4.875x3.75",
+      "family": "mailer",
+      "label": "6 1/2 x 4 7/8 x 3 3/4 in mailer box",
+      "insideIn": [6.5, 4.875, 3.75],
+      "source": "Uline: White Indestructo Mailers, column \"INSIDE DIM. L x W x H\"",
+      "sourceUrl": "https://www.uline.com/BL_1351/White-Indestructo-Mailers",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "mailer-6x6x6": {
+      "id": "mailer-6x6x6",
+      "family": "mailer",
+      "label": "6 x 6 x 6 in mailer box",
+      "insideIn": [6, 6, 6],
+      "source": "Uline: White Indestructo Mailers, column \"INSIDE DIM. L x W x H\"",
+      "sourceUrl": "https://www.uline.com/BL_1351/White-Indestructo-Mailers",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "mailer-7x5x3": {
+      "id": "mailer-7x5x3",
+      "family": "mailer",
+      "label": "7 x 5 x 3 in mailer box",
+      "insideIn": [7, 5, 3],
+      "source": "Uline: White Indestructo Mailers, column \"INSIDE DIM. L x W x H\"",
+      "sourceUrl": "https://www.uline.com/BL_1351/White-Indestructo-Mailers",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "mailer-8x6x4": {
+      "id": "mailer-8x6x4",
+      "family": "mailer",
+      "label": "8 x 6 x 4 in mailer box",
+      "insideIn": [8, 6, 4],
+      "source": "Uline: White Indestructo Mailers, column \"INSIDE DIM. L x W x H\"",
+      "sourceUrl": "https://www.uline.com/BL_1351/White-Indestructo-Mailers",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "mailer-9x6x6": {
+      "id": "mailer-9x6x6",
+      "family": "mailer",
+      "label": "9 x 6 x 6 in mailer box",
+      "insideIn": [9, 6, 6],
+      "source": "Uline: White Indestructo Mailers, column \"INSIDE DIM. L x W x H\"",
+      "sourceUrl": "https://www.uline.com/BL_1351/White-Indestructo-Mailers",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "mailer-10x8x6": {
+      "id": "mailer-10x8x6",
+      "family": "mailer",
+      "label": "10 x 8 x 6 in mailer box",
+      "insideIn": [10, 8, 6],
+      "source": "Uline: White Indestructo Mailers, column \"INSIDE DIM. L x W x H\"",
+      "sourceUrl": "https://www.uline.com/BL_1351/White-Indestructo-Mailers",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "mailer-12x9x4": {
+      "id": "mailer-12x9x4",
+      "family": "mailer",
+      "label": "12 x 9 x 4 in mailer box",
+      "insideIn": [12, 9, 4],
+      "source": "Uline: White Indestructo Mailers, column \"INSIDE DIM. L x W x H\"",
+      "sourceUrl": "https://www.uline.com/BL_1351/White-Indestructo-Mailers",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "mailer-12x6x6": {
+      "id": "mailer-12x6x6",
+      "family": "mailer",
+      "label": "12 x 6 x 6 in mailer box",
+      "insideIn": [12, 6, 6],
+      "source": "Uline: White Indestructo Mailers, column \"INSIDE DIM. L x W x H\"",
+      "sourceUrl": "https://www.uline.com/BL_1351/White-Indestructo-Mailers",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "mailer-16x6x4": {
+      "id": "mailer-16x6x4",
+      "family": "mailer",
+      "label": "16 x 6 x 4 in mailer box",
+      "insideIn": [16, 6, 4],
+      "source": "Uline: White Indestructo Mailers, column \"INSIDE DIM. L x W x H\"",
+      "sourceUrl": "https://www.uline.com/BL_1351/White-Indestructo-Mailers",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "mailer-18x4x4": {
+      "id": "mailer-18x4x4",
+      "family": "mailer",
+      "label": "18 x 4 x 4 in mailer box",
+      "insideIn": [18, 4, 4],
+      "source": "Uline: White Indestructo Mailers, column \"INSIDE DIM. L x W x H\"",
+      "sourceUrl": "https://www.uline.com/BL_1351/White-Indestructo-Mailers",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "usps-fr-small": {
+      "id": "usps-fr-small",
+      "family": "usps-flat-rate",
+      "label": "USPS Small Flat Rate Box",
+      "insideIn": [8.625, 5.375, 1.625],
+      "outsideIn": [8.6875, 5.4375, 1.75],
+      "source": "USPS Notice 123 Price List (effective 2026-10-04)",
+      "sourceUrl": "https://pe.usps.com/text/dmm300/Notice123.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "usps-fr-medium-top": {
+      "id": "usps-fr-medium-top",
+      "family": "usps-flat-rate",
+      "label": "USPS Medium Flat Rate Box (top-loading)",
+      "insideIn": [11, 8.5, 5.5],
+      "outsideIn": [11.25, 8.75, 6],
+      "source": "USPS Notice 123 Price List (effective 2026-10-04)",
+      "sourceUrl": "https://pe.usps.com/text/dmm300/Notice123.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "usps-fr-medium-side": {
+      "id": "usps-fr-medium-side",
+      "family": "usps-flat-rate",
+      "label": "USPS Medium Flat Rate Box (side-loading)",
+      "insideIn": [13.625, 11.875, 3.375],
+      "outsideIn": [14.125, 12, 3.5],
+      "source": "USPS Notice 123 Price List (effective 2026-10-04)",
+      "sourceUrl": "https://pe.usps.com/text/dmm300/Notice123.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "usps-fr-large": {
+      "id": "usps-fr-large",
+      "family": "usps-flat-rate",
+      "label": "USPS Large Flat Rate Box",
+      "insideIn": [12, 11.75, 5.5],
+      "outsideIn": [12.25, 12, 6],
+      "source": "USPS Notice 123 Price List (effective 2026-10-04)",
+      "sourceUrl": "https://pe.usps.com/text/dmm300/Notice123.htm",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    }
+  },
+  "settings": {
+    "clearancePresetsIn": {
+      "snug": 0.125,
+      "standard": 0.25,
+      "protective": 0.5
+    },
+    "exactFitStepIn": 0.125,
+    "caliperLayers": {
+      "sides": 2,
+      "rscHeight": 4
+    },
+    "topResults": 5,
+    "source": "Build plan section 12.2 (clearance presets, 1/8 in exact-fit step) and Gate 1 decision D2 (RSC height adds 4 board layers)",
+    "sourceUrl": "",
+    "effectiveFrom": "2026-11-12",
+    "verifiedOn": "2026-11-12"
+  }
+}

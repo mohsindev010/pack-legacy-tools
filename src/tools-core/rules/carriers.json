@@ -1,0 +1,157 @@
+{
+  "version": "2026-11-12",
+  "note": "Seed values from the build plan (sections 7.2 and 12.1). Each carrier stays verifiedOn=null until checked against the carrier page in the tool 1 spec (verification register items 1-3).",
+  "carriers": {
+    "ups": {
+      "id": "ups",
+      "name": "UPS",
+      "dimDivisorIn": 139,
+      "dimDivisorCm": 5000,
+      "dimRounding": "ceil-each-side-to-whole-unit",
+      "dimRoundingSince": "2025-08-18",
+      "weightRounding": "ceil-lb",
+      "metricWeightStepKg": null,
+      "dimAppliesAboveIn3": 0,
+      "surcharges": {
+        "additionalHandling": {
+          "longestGt": 48,
+          "secondGt": 30,
+          "lengthGirthGt": 105,
+          "weightGtLb": 50,
+          "volumeGtIn3": 10368,
+          "suppressedByLargePackage": true,
+          "label": "Additional Handling"
+        },
+        "largePackage": {
+          "longestGt": 96,
+          "lengthGirthGt": 130,
+          "volumeGtIn3": 17280,
+          "weightGtLb": 110,
+          "minBillableLb": 90,
+          "label": "Large Package Surcharge"
+        },
+        "overMax": {
+          "longestGt": 108,
+          "lengthGirthGt": 165,
+          "weightGtLb": 150
+        }
+      },
+      "source": "UPS: checking shipment size and weight",
+      "sourceUrl": "https://filexfer.ups.com/us/en/support/shipping-support/shipping-dimensions-weight",
+      "effectiveFrom": "2026-01-26",
+      "verifiedOn": null,
+      "secondarySources": [
+        "https://sifted.com/resources/2025-2026-fedex-ups-changes-how-dim-rounding-and-cubic-volume-rules-will-impact-your-costs/",
+        "https://www.loop.com/industry-insights/2026-parcel-surcharge-changes-what-shippers-need-to-know-about-new-cubic-volume-rules"
+      ],
+      "ruleUnit": "in",
+      "contractDivisorAllowed": true,
+      "minBillableLb": 1
+    },
+    "fedex": {
+      "id": "fedex",
+      "name": "FedEx",
+      "dimDivisorIn": 139,
+      "dimDivisorCm": 5000,
+      "dimRounding": "ceil-each-side-to-whole-unit",
+      "dimRoundingSince": "2025-08-18",
+      "weightRounding": "ceil-lb",
+      "metricWeightStepKg": null,
+      "dimAppliesAboveIn3": 0,
+      "surcharges": {
+        "additionalHandling": {
+          "longestGt": 48,
+          "secondGt": 30,
+          "lengthGirthGt": 105,
+          "weightGtLb": 50,
+          "volumeGtIn3": 10368,
+          "suppressedByLargePackage": true,
+          "label": "Additional Handling Surcharge"
+        },
+        "largePackage": {
+          "longestGt": 96,
+          "lengthGirthGt": 130,
+          "volumeGtIn3": 17280,
+          "weightGtLb": 110,
+          "minBillableLb": 90,
+          "label": "Oversize Charge"
+        },
+        "overMax": {
+          "longestGt": 108,
+          "lengthGirthGt": 165,
+          "weightGtLb": 150
+        }
+      },
+      "source": "FedEx: how to calculate dimensional weight",
+      "sourceUrl": "https://www.fedex.com/en-my/customer-support/faq/invoices-and-payments/fees-and-charges/calculate-dimensional-weight.html",
+      "effectiveFrom": "2026-01-12",
+      "verifiedOn": null,
+      "secondarySources": [
+        "https://sifted.com/resources/2025-2026-fedex-ups-changes-how-dim-rounding-and-cubic-volume-rules-will-impact-your-costs/",
+        "https://www.loop.com/industry-insights/2026-parcel-surcharge-changes-what-shippers-need-to-know-about-new-cubic-volume-rules"
+      ],
+      "ruleUnit": "in",
+      "contractDivisorAllowed": true,
+      "minBillableLb": 1
+    },
+    "usps": {
+      "id": "usps",
+      "name": "USPS",
+      "dimDivisorIn": 139,
+      "dimDivisorCm": null,
+      "previousDimDivisorIn": 166,
+      "dimRounding": "ceil-each-side-to-whole-unit",
+      "dimRoundingSince": "2026-07-12",
+      "weightRounding": "ceil-lb",
+      "metricWeightStepKg": null,
+      "dimAppliesAboveIn3": 1728,
+      "limits": {
+        "maxWeightLb": 70,
+        "oversizedLengthGirthGt": 108,
+        "maxLengthGirth": 130
+      },
+      "surcharges": {},
+      "source": "USPS Domestic Mail Manual 223 (Priority Mail) 1.4 and 283 (Ground Advantage) 1.4",
+      "sourceUrl": "https://pe.usps.com/text/dmm300/223.htm",
+      "effectiveFrom": "2026-07-12",
+      "verifiedOn": "2026-11-12",
+      "nonstandard": {
+        "lengthGtIn": [22, 30],
+        "volumeGtIn3": 3456
+      },
+      "nonrectangular": {
+        "factor": 0.785,
+        "priorityMail": {
+          "divisor": 166,
+          "sideRounding": "round-nearest"
+        },
+        "groundAdvantage": {
+          "divisor": 139,
+          "sideRounding": "ceil"
+        }
+      },
+      "openItems": ["Priority Mail 130 in L+G maximum seen only in Notice 123 quick reference"],
+      "ruleUnit": "in",
+      "contractDivisorAllowed": false,
+      "minBillableLb": 1
+    },
+    "dhl": {
+      "id": "dhl",
+      "name": "DHL Express",
+      "dimDivisorCm": 5000,
+      "dimRounding": "ceil-each-side-to-whole-unit",
+      "weightRounding": "ceil-step",
+      "metricWeightStepKg": 0.5,
+      "dimAppliesAboveIn3": 0,
+      "surcharges": {},
+      "source": "DHL: volumetric weight",
+      "sourceUrl": "https://dct.dhl.com/help",
+      "effectiveFrom": "2026-01-01",
+      "verifiedOn": null,
+      "ruleUnit": "cm",
+      "contractDivisorAllowed": false,
+      "minBillableKg": 0.5,
+      "note": "International express. Dimension rounding before dividing (whole cm or none) is unconfirmed."
+    }
+  }
+}

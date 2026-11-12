@@ -1,0 +1,45 @@
+/*
+ * Design tokens for the tools. Swap these values for Pack Legacy tokens at merge
+ * time (section 19, step 3); component CSS only ever reads var(--plt-*).
+ * Prefixed --plt- so nothing collides with the host site's variables.
+ */
+:root {
+  --plt-color-brand: #1d5c45;
+  --plt-color-brand-strong: #154533;
+  --plt-color-brand-soft: #e8f0ec;
+  /* Accent carries white text (buttons, badges): keep contrast >= 4.5:1 (WCAG AA). */
+  --plt-color-accent: #a8520f; /* 5.41:1 on white */
+  --plt-color-accent-strong: #8a4209;
+
+  --plt-color-bg: #ffffff;
+  --plt-color-surface: #f6f8f7;
+  --plt-color-border: #d6dedb;
+  --plt-color-text: #1b2420;
+  --plt-color-text-muted: #55625d;
+
+  --plt-color-info-bg: #eaf2fb;
+  --plt-color-info-fg: #1c4f86;
+  --plt-color-warn-bg: #fdf3e6;
+  --plt-color-warn-fg: #8a4b0f;
+  --plt-color-error-bg: #fcecec;
+  --plt-color-error-fg: #a12626;
+
+  --plt-font-sans:
+    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --plt-font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --plt-radius-sm: 6px;
+  --plt-radius-md: 10px;
+  --plt-radius-lg: 16px;
+
+  --plt-space-1: 4px;
+  --plt-space-2: 8px;
+  --plt-space-3: 12px;
+  --plt-space-4: 16px;
+  --plt-space-5: 24px;
+  --plt-space-6: 32px;
+  --plt-space-7: 48px;
+
+  --plt-content-width: 1120px;
+  --plt-focus-ring: 0 0 0 3px rgba(217, 120, 43, 0.45);
+}

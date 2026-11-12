@@ -1,0 +1,67 @@
+/* Lab-only shell. Replaced by the Pack Legacy header/footer at merge (section 19, step 4). */
+
+.body {
+  margin: 0;
+  background: var(--plt-color-bg);
+  color: var(--plt-color-text);
+  font-family: var(--plt-font-sans);
+  -webkit-text-size-adjust: 100%;
+}
+.body *,
+.body *::before,
+.body *::after {
+  box-sizing: border-box;
+}
+
+.header {
+  background: var(--plt-color-brand);
+  color: #fff;
+}
+.headerInner {
+  max-width: var(--plt-content-width);
+  margin: 0 auto;
+  padding: var(--plt-space-3) var(--plt-space-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--plt-space-4);
+}
+.brand {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+.labBadge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--plt-color-accent);
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+}
+.skip:focus {
+  left: var(--plt-space-4);
+  top: var(--plt-space-2);
+  background: #fff;
+  color: var(--plt-color-brand);
+  padding: var(--plt-space-2) var(--plt-space-3);
+  border-radius: var(--plt-radius-sm);
+  z-index: 10;
+}
+
+.footer {
+  border-top: 1px solid var(--plt-color-border);
+  color: var(--plt-color-text-muted);
+  font-size: 0.875rem;
+}
+.footerInner {
+  max-width: var(--plt-content-width);
+  margin: 0 auto;
+  padding: var(--plt-space-5) var(--plt-space-4);
+}

@@ -1,0 +1,85 @@
+{
+  "version": "2026-11-12",
+  "note": "Basis reams. gsm-per-lb factors are DERIVED in the engine: 453.59237 g / (sheet area x sheets in m2). Paperboard is lb per 1,000 ft2.",
+  "grades": {
+    "bond": {
+      "id": "bond",
+      "name": "Bond / writing",
+      "basisSheetIn": [17, 22],
+      "sheetsPerReam": 500,
+      "source": "Valmet: ream sizes and conversion factors; cross-checked with Wikipedia Grammage ream table",
+      "sourceUrl": "https://www.valmet.com/media/articles/up-and-running/reliability/FRReamSizes/",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "text": {
+      "id": "text",
+      "name": "Text / book / offset",
+      "basisSheetIn": [25, 38],
+      "sheetsPerReam": 500,
+      "source": "Valmet: ream sizes and conversion factors; cross-checked with Wikipedia Grammage ream table",
+      "sourceUrl": "https://www.valmet.com/media/articles/up-and-running/reliability/FRReamSizes/",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "cover": {
+      "id": "cover",
+      "name": "Cover",
+      "basisSheetIn": [20, 26],
+      "sheetsPerReam": 500,
+      "source": "Valmet: ream sizes and conversion factors; cross-checked with Wikipedia Grammage ream table",
+      "sourceUrl": "https://www.valmet.com/media/articles/up-and-running/reliability/FRReamSizes/",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "index": {
+      "id": "index",
+      "name": "Index bristol",
+      "basisSheetIn": [25.5, 30.5],
+      "sheetsPerReam": 500,
+      "source": "Valmet: ream sizes and conversion factors; cross-checked with Wikipedia Grammage ream table",
+      "sourceUrl": "https://www.valmet.com/media/articles/up-and-running/reliability/FRReamSizes/",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "bristolTag": {
+      "id": "bristolTag",
+      "name": "Bristol and tag",
+      "basisSheetIn": [22.5, 28.5],
+      "sheetsPerReam": 500,
+      "source": "Valmet: ream sizes and conversion factors; cross-checked with Wikipedia Grammage ream table",
+      "sourceUrl": "https://www.valmet.com/media/articles/up-and-running/reliability/FRReamSizes/",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "tissue": {
+      "id": "tissue",
+      "name": "Tissue",
+      "basisSheetIn": [24, 36],
+      "sheetsPerReam": 480,
+      "source": "Valmet: ream sizes and conversion factors; cross-checked with Wikipedia Grammage ream table",
+      "sourceUrl": "https://www.valmet.com/media/articles/up-and-running/reliability/FRReamSizes/",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "newsprint": {
+      "id": "newsprint",
+      "name": "Newsprint / bag / wrapping",
+      "basisSheetIn": [24, 36],
+      "sheetsPerReam": 500,
+      "source": "Valmet: ream sizes and conversion factors; cross-checked with Wikipedia Grammage ream table",
+      "sourceUrl": "https://www.valmet.com/media/articles/up-and-running/reliability/FRReamSizes/",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "paperboard": {
+      "id": "paperboard",
+      "name": "Paperboard (lb per 1,000 sq ft)",
+      "basisAreaFt2": 1000,
+      "source": "Valmet: ream sizes and conversion factors; Wikipedia Grammage",
+      "sourceUrl": "https://www.valmet.com/media/articles/up-and-running/reliability/FRReamSizes/",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "version": "2026-11-12",
+  "note": "Nominal calipers from a secondary US flute table. verifiedOn stays null until Pack Legacy corrugator spec sheets confirm them.",
+  "flutes": {
+    "e": {
+      "id": "e",
+      "name": "E-flute",
+      "caliperIn": 0.0625,
+      "source": "US standard flute table (Packaging Strategies: corrugated board and material grades)",
+      "sourceUrl": "https://www.packagingstrategies.com/articles/96269-corrugated-board-and-material-grades",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": null
+    },
+    "b": {
+      "id": "b",
+      "name": "B-flute",
+      "caliperIn": 0.125,
+      "source": "US standard flute table (Packaging Strategies: corrugated board and material grades)",
+      "sourceUrl": "https://www.packagingstrategies.com/articles/96269-corrugated-board-and-material-grades",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": null
+    },
+    "c": {
+      "id": "c",
+      "name": "C-flute",
+      "caliperIn": 0.15625,
+      "source": "US standard flute table (Packaging Strategies: corrugated board and material grades)",
+      "sourceUrl": "https://www.packagingstrategies.com/articles/96269-corrugated-board-and-material-grades",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": null
+    },
+    "bc": {
+      "id": "bc",
+      "name": "BC double wall",
+      "caliperIn": 0.25,
+      "source": "US standard flute table (Packaging Strategies: corrugated board and material grades)",
+      "sourceUrl": "https://www.packagingstrategies.com/articles/96269-corrugated-board-and-material-grades",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": null,
+      "note": "Double-wall caliper varies by supplier (5-6 mm vs 6.1-6.7 mm). Least certain value."
+    }
+  }
+}

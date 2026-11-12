@@ -1,0 +1,52 @@
+{
+  "version": "2026-11-12",
+  "note": "Evergreen Line dry containers, read 12 Nov 2026. The page says the dimensions are for guidance only since individual containers can vary slightly. 40 ft HC weights: the 30,480 kg MGW row (Gate 1 D1); the page also prints a 32,500 kg MGW row.",
+  "containers": {
+    "20ft": {
+      "id": "20ft",
+      "name": "20 ft standard",
+      "insideMm": [5898, 2352, 2393],
+      "doorMm": [2340, 2280],
+      "capacityM3": 33.2,
+      "tareKg": 2120,
+      "maxGrossKg": 30480,
+      "payloadKg": 28360,
+      "source": "Evergreen Line: container information",
+      "sourceUrl": "https://www.evergreen-line.com/container/jsp/CNTR_ContainerInformation.jsp",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "40ft": {
+      "id": "40ft",
+      "name": "40 ft standard",
+      "insideMm": [12032, 2352, 2385],
+      "doorMm": [2343, 2280],
+      "capacityM3": 67.5,
+      "tareKg": 4000,
+      "maxGrossKg": 30480,
+      "payloadKg": 26480,
+      "source": "Evergreen Line: container information",
+      "sourceUrl": "https://www.evergreen-line.com/container/jsp/CNTR_ContainerInformation.jsp",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    },
+    "40hc": {
+      "id": "40hc",
+      "name": "40 ft high cube",
+      "insideMm": [12032, 2352, 2690],
+      "doorMm": [2343, 2585],
+      "capacityM3": 76.4,
+      "tareKg": 4200,
+      "maxGrossKg": 30480,
+      "payloadKg": 26280,
+      "source": "Evergreen Line: container information",
+      "sourceUrl": "https://www.evergreen-line.com/container/jsp/CNTR_ContainerInformation.jsp",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": "2026-11-12"
+    }
+  },
+  "settings": {
+    "roadWeightInfoKg": 20000,
+    "note": "Threshold for the ROAD_WEIGHT info flag (Gate 1 D3). Not a legal limit; road limits vary by country."
+  }
+}

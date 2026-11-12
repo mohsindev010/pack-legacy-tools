@@ -1,0 +1,47 @@
+{
+  "version": "2026-11-12",
+  "note": "Verified against the DMM on 2026-11-12 (paragraphs tagged [7-12-26]).",
+  "cubic": {
+    "measuring": {
+      "truncateEachSideToIn": 0.25,
+      "tierStepFt3": 0.1
+    },
+    "groundAdvantageCubic": {
+      "maxFt3": 1,
+      "maxWeightLb": 20,
+      "maxLongestIn": 22
+    },
+    "priorityMailCubic": {
+      "maxFt3": 0.5,
+      "maxWeightLb": 20,
+      "maxLongestIn": 22
+    },
+    "excludedPackaging": ["tube"],
+    "softpackTiers": [
+      {
+        "tierFt3": 0.1,
+        "maxLengthPlusWidthIn": 21
+      },
+      {
+        "tierFt3": 0.2,
+        "maxLengthPlusWidthIn": 27
+      },
+      {
+        "tierFt3": 0.3,
+        "maxLengthPlusWidthIn": 31
+      },
+      {
+        "tierFt3": 0.4,
+        "maxLengthPlusWidthIn": 34
+      },
+      {
+        "tierFt3": 0.5,
+        "maxLengthPlusWidthIn": 36
+      }
+    ],
+    "source": "USPS Domestic Mail Manual 223 1.3 and 283 1.3 (cubic pricing)",
+    "sourceUrl": "https://pe.usps.com/text/dmm300/283.htm",
+    "effectiveFrom": "2026-07-12",
+    "verifiedOn": "2026-11-12"
+  }
+}

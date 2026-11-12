@@ -1,0 +1,55 @@
+{
+  "version": "2026-11-12",
+  "note": "Pallet height, weight and load capacity are seeds (register item 12). VERIFY with manufacturer or industry data.",
+  "defaults": { "maxLoadHeightIn": 60, "overhangIn": 0 },
+  "pallets": {
+    "gma-48x40": {
+      "id": "gma-48x40",
+      "name": "GMA 48 x 40 in",
+      "footprintIn": [48, 40],
+      "heightIn": 5.5,
+      "weightLb": 40,
+      "maxGrossLb": 2500,
+      "source": "TBD: pallet manufacturer data",
+      "sourceUrl": "",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": null
+    },
+    "48x48": {
+      "id": "48x48",
+      "name": "48 x 48 in",
+      "footprintIn": [48, 48],
+      "heightIn": 5.5,
+      "weightLb": 45,
+      "maxGrossLb": 2500,
+      "source": "TBD: pallet manufacturer data",
+      "sourceUrl": "",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": null
+    },
+    "eur-1200x800": {
+      "id": "eur-1200x800",
+      "name": "EUR 1200 x 800 mm",
+      "footprintIn": [47.244, 31.496],
+      "heightIn": 5.669,
+      "weightLb": 55,
+      "maxGrossLb": 3300,
+      "source": "TBD: EPAL specification",
+      "sourceUrl": "",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": null
+    },
+    "iso-1200x1000": {
+      "id": "iso-1200x1000",
+      "name": "ISO 1200 x 1000 mm",
+      "footprintIn": [47.244, 39.37],
+      "heightIn": 5.669,
+      "weightLb": 66,
+      "maxGrossLb": 3300,
+      "source": "TBD: ISO 6780 or manufacturer data",
+      "sourceUrl": "",
+      "effectiveFrom": "2026-11-12",
+      "verifiedOn": null
+    }
+  }
+}

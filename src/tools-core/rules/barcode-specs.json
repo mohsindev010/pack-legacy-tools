@@ -1,0 +1,191 @@
+{
+  "version": "2026-11-12",
+  "note": "Per-symbology sizes for tool 5. X = narrowest bar or module, mm. Quiet zones in X. EAN/UPC are sized by magnification of a nominal X; the others by X directly.",
+  "contrast": {
+    "warnBelow": 0.4,
+    "source": "ISO/IEC 15416 symbol contrast grades (A >= 70%, B >= 55%, C >= 40%, D >= 20%); verified with red light (about 660 nm)",
+    "sourceUrl": "https://www.iso.org/standard/76473.html",
+    "effectiveFrom": "2024-01-01",
+    "verifiedOn": null,
+    "note": "660 nm verified in the GSCN; grade thresholds from a verifier vendor manual (secondary) until ISO/IEC 15416 is read."
+  },
+  "symbologies": {
+    "upca": {
+      "id": "upca",
+      "label": "UPC-A",
+      "bwip": "upca",
+      "kind": "ean",
+      "use": "Retail products scanned at a US or Canadian checkout",
+      "xNominalMm": 0.33,
+      "magnification": {
+        "min": 80,
+        "max": 200
+      },
+      "quietZoneX": [9, 9],
+      "barHeightMm": 22.85,
+      "symbolHeightMm": 25.93,
+      "guardExtensionX": 5,
+      "source": "GS1 General Specifications v23, EAN/UPC dimensions (GS1 Austria edition, figs 5.2.6.6-1 to -4, 5.2.6.7-1)",
+      "sourceUrl": "https://gs1.at/sites/default/files/2025-03/Allgemeine-GS1-Spezifikationen-EAN-UPC-Abmessungen.pdf",
+      "effectiveFrom": "2026-01-01",
+      "verifiedOn": "2026-11-12"
+    },
+    "upce": {
+      "id": "upce",
+      "label": "UPC-E",
+      "bwip": "upce",
+      "kind": "ean",
+      "use": "Small retail packs (zero-suppressed UPC-A)",
+      "xNominalMm": 0.33,
+      "magnification": {
+        "min": 80,
+        "max": 200
+      },
+      "quietZoneX": [9, 7],
+      "barHeightMm": 22.85,
+      "symbolHeightMm": 25.93,
+      "guardExtensionX": 5,
+      "source": "GS1 General Specifications v23, EAN/UPC dimensions (GS1 Austria edition, figs 5.2.6.6-1 to -4, 5.2.6.7-1)",
+      "sourceUrl": "https://gs1.at/sites/default/files/2025-03/Allgemeine-GS1-Spezifikationen-EAN-UPC-Abmessungen.pdf",
+      "effectiveFrom": "2026-01-01",
+      "verifiedOn": "2026-11-12"
+    },
+    "ean13": {
+      "id": "ean13",
+      "label": "EAN-13",
+      "bwip": "ean13",
+      "kind": "ean",
+      "use": "Retail products outside the US and Canada (also scans in the US)",
+      "xNominalMm": 0.33,
+      "magnification": {
+        "min": 80,
+        "max": 200
+      },
+      "quietZoneX": [11, 7],
+      "barHeightMm": 22.85,
+      "symbolHeightMm": 25.93,
+      "guardExtensionX": 5,
+      "source": "GS1 General Specifications v23, EAN/UPC dimensions (GS1 Austria edition, figs 5.2.6.6-1 to -4, 5.2.6.7-1)",
+      "sourceUrl": "https://gs1.at/sites/default/files/2025-03/Allgemeine-GS1-Spezifikationen-EAN-UPC-Abmessungen.pdf",
+      "effectiveFrom": "2026-01-01",
+      "verifiedOn": "2026-11-12"
+    },
+    "ean8": {
+      "id": "ean8",
+      "label": "EAN-8",
+      "bwip": "ean8",
+      "kind": "ean",
+      "use": "Very small retail packs (GTIN-8 issued by GS1)",
+      "xNominalMm": 0.33,
+      "magnification": {
+        "min": 80,
+        "max": 200
+      },
+      "quietZoneX": [7, 7],
+      "barHeightMm": 18.23,
+      "symbolHeightMm": 21.31,
+      "guardExtensionX": 5,
+      "source": "GS1 General Specifications v23, EAN/UPC dimensions (GS1 Austria edition, figs 5.2.6.6-1 to -4, 5.2.6.7-1)",
+      "sourceUrl": "https://gs1.at/sites/default/files/2025-03/Allgemeine-GS1-Spezifikationen-EAN-UPC-Abmessungen.pdf",
+      "effectiveFrom": "2026-01-01",
+      "verifiedOn": "2026-11-12"
+    },
+    "itf14": {
+      "id": "itf14",
+      "label": "ITF-14",
+      "bwip": "itf14",
+      "kind": "linear",
+      "use": "Outer cases and shipping cartons (GTIN-14), often printed on corrugated",
+      "x": {
+        "minMm": 0.495,
+        "defaultMm": 0.495,
+        "maxMm": 1.016
+      },
+      "minBarHeightMm": 31.75,
+      "wideRatio": 2.5,
+      "quietZoneX": [10, 10],
+      "source": "GS1 General Specifications change notice GSCN 16-434 (symbol specification tables 2 and 5); bearer bar 4.8 mm: GS1 Sweden, Use ITF-14",
+      "sourceUrl": "https://ref.gs1.org/standards/genspecs/gscn/2016/GSCN_16-434_Table2and5.pdf",
+      "effectiveFrom": "2026-01-01",
+      "verifiedOn": null,
+      "bearerBarMm": 4.8,
+      "note": "Values read in the 2016 GS1 change notice; current GenSpecs table 5.12.3 not yet read. X below 0.635 mm should not be plate-printed on corrugated."
+    },
+    "gs1-128": {
+      "id": "gs1-128",
+      "label": "GS1-128",
+      "bwip": "gs1-128",
+      "kind": "linear",
+      "use": "Logistics labels: GTIN with lot, dates, weights and SSCC (application identifiers)",
+      "x": {
+        "minMm": 0.495,
+        "defaultMm": 0.495,
+        "maxMm": 0.94
+      },
+      "minBarHeightMm": 31.75,
+      "maxWidthMm": 165,
+      "quietZoneX": [10, 10],
+      "source": "GS1 General Specifications change notice GSCN 16-434 (symbol specification tables 2 and 5) (table 5, logistic units)",
+      "sourceUrl": "https://ref.gs1.org/standards/genspecs/gscn/2016/GSCN_16-434_Table2and5.pdf",
+      "effectiveFrom": "2026-01-01",
+      "verifiedOn": null,
+      "note": "Max X 0.940 mm for logistic labels (table 5; trade items allow 1.016). 2016 text; current table not yet read."
+    },
+    "code128": {
+      "id": "code128",
+      "label": "Code 128",
+      "bwip": "code128",
+      "kind": "linear",
+      "use": "Internal labels: SKUs, bins, work orders (not for retail checkout)",
+      "x": {
+        "minMm": 0.19,
+        "defaultMm": 0.33,
+        "maxMm": 1.016
+      },
+      "minBarHeightMm": 6.35,
+      "defaultBarHeightMm": 15,
+      "quietZoneX": [10, 10],
+      "source": "ISO/IEC 15417 (Code 128): quiet zone 10X",
+      "sourceUrl": "https://www.iso.org/standard/43896.html",
+      "effectiveFrom": "2007-06-01",
+      "verifiedOn": null
+    },
+    "code39": {
+      "id": "code39",
+      "label": "Code 39",
+      "bwip": "code39",
+      "kind": "linear",
+      "use": "Legacy industrial and automotive labels (uppercase letters, digits, - . $ / + % space)",
+      "x": {
+        "minMm": 0.19,
+        "defaultMm": 0.33,
+        "maxMm": 1.016
+      },
+      "minBarHeightMm": 6.35,
+      "defaultBarHeightMm": 15,
+      "wideRatio": 2.5,
+      "quietZoneX": [10, 10],
+      "source": "ISO/IEC 16388 (Code 39): quiet zone 10X, wide:narrow 2:1 to 3:1",
+      "sourceUrl": "https://www.iso.org/standard/72574.html",
+      "effectiveFrom": "2023-01-01",
+      "verifiedOn": null
+    },
+    "gs1datamatrix": {
+      "id": "gs1datamatrix",
+      "label": "GS1 DataMatrix",
+      "bwip": "gs1datamatrix",
+      "kind": "matrix",
+      "use": "2D code for GTIN plus lot, expiry and serial (healthcare, Sunrise 2027 retail)",
+      "x": {
+        "minMm": 0.396,
+        "defaultMm": 0.495,
+        "maxMm": 0.99
+      },
+      "quietZoneX": [1, 1],
+      "source": "GS1: Solution provider 2D readiness (GenSpecs 2025 figs 5.12.3.1-3, 5.12.3.3-2) (table 1, retail POS)",
+      "sourceUrl": "https://ref.gs1.org/sme-guidance/solution-provider-2d-readiness/",
+      "effectiveFrom": "2026-01-01",
+      "verifiedOn": "2026-11-12"
+    }
+  }
+}

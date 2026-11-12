@@ -1,0 +1,52 @@
+{
+  "version": "2026-11-12",
+  "note": "QR print rules for tool 4. Quiet zone is fixed by ISO/IEC 18004; the size and module guidelines are industry rules of thumb, not standards.",
+  "quietZone": {
+    "modules": 4,
+    "source": "ISO/IEC 18004 (QR Code): quiet zone of 4 modules on every side",
+    "sourceUrl": "https://www.iso.org/standard/83389.html",
+    "effectiveFrom": "2024-08-01",
+    "verifiedOn": null,
+    "note": "GS1's 2D table states 1X for QR with GS1 Digital Link; we keep the ISO/IEC 18004 rule of 4 modules, which satisfies both."
+  },
+  "sizing": {
+    "minSizeMm": 20,
+    "distanceRatio": 10,
+    "source": "Scanova: minimum QR code size (10:1 scan distance rule, 2 x 2 cm minimum)",
+    "sourceUrl": "https://scanova.io/blog/minimum-qr-code-size/",
+    "effectiveFrom": "2026-11-12",
+    "verifiedOn": null
+  },
+  "module": {
+    "minMm": 0.396,
+    "targetMm": 0.495,
+    "source": "GS1: Solution provider 2D readiness (GenSpecs 2025 figs 5.12.3.1-3, 5.12.3.3-2): QR Code with GS1 Digital Link, X min 0.396, target 0.495 mm",
+    "sourceUrl": "https://ref.gs1.org/sme-guidance/solution-provider-2d-readiness/",
+    "effectiveFrom": "2025-01-01",
+    "verifiedOn": "2026-11-12"
+  },
+  "contrast": {
+    "warnBelow": 0.4,
+    "source": "ISO/IEC 15415 symbol contrast grades (A >= 70%, B >= 55%, C >= 40%, D >= 20%)",
+    "sourceUrl": "https://www.iso.org/standard/77391.html",
+    "effectiveFrom": "2024-01-01",
+    "verifiedOn": null
+  },
+  "logo": {
+    "maxWidthShare": 0.2,
+    "level": "H",
+    "source": "Error correction level H restores about 30% of the symbol (ISO/IEC 18004); logo kept to 20% of the width (4% of the area) for margin",
+    "sourceUrl": "https://www.iso.org/standard/83389.html",
+    "effectiveFrom": "2026-11-12",
+    "verifiedOn": null
+  },
+  "gs1DigitalLink": {
+    "pathAis": ["01", "10", "21"],
+    "queryAis": ["17"],
+    "source": "GS1 Digital Link Standard: URI Syntax, release 1.7.0 (sections 4.5, 4.9, 4.10)",
+    "sourceUrl": "https://ref.gs1.org/standards/digital-link/uri-syntax/",
+    "effectiveFrom": "2026-11-12",
+    "verifiedOn": "2026-11-12",
+    "note": "GTIN always 14 digits (leading zeros); path order /01/{gtin}/10/{lot}/21/{serial}; expiry in the query string ?17=YYMMDD."
+  }
+}
