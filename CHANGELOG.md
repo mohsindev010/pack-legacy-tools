@@ -2,6 +2,10 @@
 
 Every rules change gets an entry: what changed, why, the official source and the date (build plan, section 10.3).
 
+## 2026-11-17: CI fix
+
+- `pnpm typecheck` now runs `next typegen` first. CI type-checks before building, so the generated `PageProps`, `LayoutProps` and `RouteContext` helpers did not exist there and `tsc` failed.
+
 ## 2026-11-17: Tester review fixes (tools 1, 2, 3 and all widgets)
 
 - `carriers.json`: removed `ruleUnit`. cm/kg input now uses the metric divisor 5,000 for UPS, FedEx and DHL Express (UPS/FedEx round up to whole kg, `minBillableKg` 1; UPS source: UPS metric dimensions and weight guide; FedEx whole-kg rounding not yet confirmed). DHL Express gains `dimDivisorIn` 139 and `minBillableLb` 1 (DHL rate-quote page). USPS stays inch-only.
