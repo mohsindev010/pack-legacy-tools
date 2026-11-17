@@ -2,6 +2,10 @@
 
 Every rules change gets an entry: what changed, why, the official source and the date (build plan, section 10.3).
 
+## 2026-11-17: Phone layout fix
+
+- "How this result was calculated": long unbreakable steps (GS1 Digital Link URLs on the QR generator) widened the page by 43–58 px at 390 px on Linux fonts. The steps list now caps its column and wraps long tokens. The phone-width QA test now uses Linux-style wide fonts, so it fails locally the same way it failed in CI.
+
 ## 2026-11-17: QA review fixes
 
 - **Pallet calculator (high):** a tiny carton size (e.g. 1e-9 in) made the layer search loop until the process ran out of memory, reachable from the public API. `bestLayer` now keeps only the running best and skips two-block splits above 2,000 columns or rows; carton sides must be at least 0.1 in / 0.25 cm; pallet overrides are bounded.

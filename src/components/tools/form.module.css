@@ -169,6 +169,7 @@
 .how {
   border-top: 1px solid var(--plt-color-border);
   padding-top: var(--plt-space-3);
+  min-width: 0;
 }
 .how h3 {
   margin: 0 0 var(--plt-space-2);

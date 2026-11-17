@@ -137,7 +137,14 @@
   margin: 0;
   padding-left: var(--plt-space-5);
   display: grid;
+  /* Grid items grow to their longest unbreakable word (URLs, GS1 strings)
+     unless capped; long tokens must wrap instead of widening the page. */
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--plt-space-2);
+}
+.steps li {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .steps code,
 .formula {

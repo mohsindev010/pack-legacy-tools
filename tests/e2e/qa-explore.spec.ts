@@ -30,6 +30,10 @@ for (const slug of TOOLS) {
     const problems = watchConsole(page);
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(`/tools/${slug}/`);
+    // CI runs on Linux with wider fonts; reproduce that here.
+    await page.addStyleTag({
+      content: "*{font-family: 'DejaVu Sans', Verdana, sans-serif !important}",
+    });
     await expect(
       page.getByRole("heading", { name: "How this result was calculated" }),
     ).toBeVisible();
