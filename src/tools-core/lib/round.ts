@@ -10,7 +10,9 @@ export const CEIL_EPSILON = 1e-9;
 /** Round up to a multiple of `step` (default 1), guarding against float error. */
 export function ceilTo(x: number, step = 1): number {
   if (step <= 0) throw new RangeError("step must be > 0");
-  return Math.ceil(x / step - CEIL_EPSILON) * step;
+  const r = Math.ceil(x / step - CEIL_EPSILON) * step;
+  // The float guard must not round a real (if tiny) positive value down to 0.
+  return x > 0 && r <= 0 ? step : r;
 }
 
 /** Round a side up to the next whole unit (inch or cm): 12.2 -> 13. */

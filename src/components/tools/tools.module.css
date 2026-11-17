@@ -160,6 +160,10 @@
   border: 1px solid var(--plt-color-border);
   border-radius: var(--plt-radius-md);
 }
+.tableWrap:focus-visible {
+  outline: 2px solid var(--plt-color-brand);
+  outline-offset: 2px;
+}
 .table {
   border-collapse: collapse;
   width: 100%;
@@ -377,4 +381,15 @@
 .dpi select {
   font: inherit;
   padding: var(--plt-space-1) var(--plt-space-2);
+}
+
+/* Layer diagram (pallet calculator) */
+.diagram {
+  margin: 0;
+  display: grid;
+  gap: var(--plt-space-2);
+  color: var(--plt-color-text-muted);
+}
+.diagram figcaption {
+  font-size: 0.875rem;
 }

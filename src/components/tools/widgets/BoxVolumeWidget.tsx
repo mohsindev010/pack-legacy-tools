@@ -158,6 +158,7 @@ export function BoxVolumeWidget({ slug }: WidgetProps) {
   const v = shown?.result.value;
   const many = (v?.qty ?? 1) > 1;
   const vol = v ? (many ? v.total : v.perCarton) : null;
+  const hasWeight = v?.totalWeight != null;
 
   const values =
     v && vol
@@ -173,8 +174,16 @@ export function BoxVolumeWidget({ slug }: WidgetProps) {
                 },
               ]
             : []),
-          ...(v.totalWeight !== null && many
-            ? [{ label: "Total weight", value: `${fmt(v.totalWeight)} ${v.weightUnit}` }]
+          ...(v.totalWeight !== null && v.totalWeightKg !== null
+            ? [
+                {
+                  label: many ? "Total weight" : "Weight",
+                  value:
+                    v.weightUnit === "lb"
+                      ? `${fmt(v.totalWeight)} lb (${fmt(v.totalWeightKg)} kg)`
+                      : `${fmt(v.totalWeight)} kg (${fmt(v.totalWeightKg / KG_PER_LB)} lb)`,
+                },
+              ]
             : []),
         ]
       : [];
@@ -238,7 +247,7 @@ export function BoxVolumeWidget({ slug }: WidgetProps) {
           <NumberField
             label="Weight per carton"
             unit={wu}
-            hint="Optional: checks the container payload."
+            hint="Optional: adds total weight, cargo weight per container and the payload check."
             value={fields.weight}
             onChange={(x) => set("weight", x)}
             error={errors.weight}
@@ -295,6 +304,12 @@ export function BoxVolumeWidget({ slug }: WidgetProps) {
               { key: "limit", label: "Limited by" },
               { key: "needed", label: `Containers for ${fmt(v.qty, 0)}` },
               { key: "used", label: "Space used" },
+              ...(hasWeight
+                ? [
+                    { key: "byWeight", label: "Max by weight" },
+                    { key: "cargo", label: "Cargo weight per container" },
+                  ]
+                : []),
             ]}
             rows={v.containers.map((c) => ({
               name: c.name,
@@ -310,6 +325,11 @@ export function BoxVolumeWidget({ slug }: WidgetProps) {
                     ? `${fmt(c.needed, 0)} (last holds ${fmt(c.lastHolds ?? 0, 0)})`
                     : fmt(c.needed, 0),
               used: c.fit > 0 ? `${fmt(c.utilisation * 100, 1)} %` : "–",
+              byWeight: c.weightCap === null ? "–" : fmt(c.weightCap, 0),
+              cargo:
+                c.loadKg === null || c.payloadUsed === null
+                  ? "–"
+                  : `${fmt(c.loadKg, 0)} of ${fmt(c.payloadKg, 0)} kg (${fmt(c.payloadUsed * 100, 1)} %)`,
             }))}
           />
         )}

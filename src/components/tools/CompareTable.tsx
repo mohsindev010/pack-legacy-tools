@@ -18,8 +18,17 @@ export function CompareTable({
   /** Render the first column as a row header (<th scope="row">). */
   rowHeader?: boolean;
 }) {
+  // The wrapper scrolls sideways when the table is wider than the column (narrow
+  // screens, wider fonts), so keyboard users must be able to focus it (WCAG 2.1.1).
+  const name =
+    caption ??
+    (columns
+      .map((c) => c.label)
+      .filter(Boolean)
+      .join(", ") ||
+      "Table");
   return (
-    <div className={s.tableWrap}>
+    <div className={s.tableWrap} tabIndex={0} role="region" aria-label={name}>
       <table className={s.table}>
         {caption && <caption>{caption}</caption>}
         <thead>

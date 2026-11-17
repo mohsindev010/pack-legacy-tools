@@ -137,6 +137,26 @@ describe("tool 6 edge cases and flags", () => {
     expect(codes(A)).toEqual(expect.arrayContaining(["UNIFORM_STACK", "CONTAINER_VARIES"]));
   });
 
+  it("a light carton is space-limited but still reports weight and payload use", () => {
+    // 24 x 18 x 12 in at 20 lb: 20 ft fits 315 by space; 20 lb = 9.0718474 kg.
+    const v = val({ ...A, weight: 20, qty: 1000 });
+    expect(v.totalWeight).toBe(20000);
+    expect(r(v.totalWeightKg!, 2)).toBe(9071.85);
+    const c = box(v, "20ft");
+    expect(c.limit).toBe("space");
+    expect(c.weightCap).toBe(3126); // 28,360 / 9.0718474 = 3,126.2
+    expect(r(c.loadKg!, 1)).toBe(2857.6); // 315 x 9.0718474
+    expect(r(c.payloadUsed! * 100, 1)).toBe(10.1);
+    const steps = run({ ...A, weight: 20 }).explain.map((e) => e.text);
+    expect(steps.some((t) => t.includes("so space sets the count"))).toBe(true);
+  });
+
+  it("without a weight there is no payload data", () => {
+    const v = val(A);
+    expect(v.totalWeight).toBeNull();
+    expect(box(v, "20ft")).toMatchObject({ weightCap: null, loadKg: null, payloadUsed: null });
+  });
+
   it("lb weights are converted to kg for the payload", () => {
     // 100 lb = 45.359237 kg -> 28,360 / 45.359237 = 625.2
     expect(box(val({ ...A, weight: 100 }), "20ft").weightCap).toBe(625);

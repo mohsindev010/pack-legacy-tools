@@ -2,6 +2,32 @@
 
 Every rules change gets an entry: what changed, why, the official source and the date (build plan, section 10.3).
 
+## 2026-11-17: QA review fixes
+
+- **Pallet calculator (high):** a tiny carton size (e.g. 1e-9 in) made the layer search loop until the process ran out of memory, reachable from the public API. `bestLayer` now keeps only the running best and skips two-block splits above 2,000 columns or rows; carton sides must be at least 0.1 in / 0.25 cm; pallet overrides are bounded.
+- **Dimensional weight (high):** DHL Express had no size or weight limits, so an oversized parcel was still quoted. `carriers.json` DHL: piece limit 120 × 80 × 80 cm and 70 kg (DHL Express Weights & Sizes 2026), Oversize Piece over 100 cm longest or 80 cm second side (DHL surcharges page); both unverified against a fetched page.
+- **Rounding (medium):** `ceilTo` rounded a tiny positive side down to 0; a positive value now rounds up to at least one step.
+- Pallet preset values are returned exactly (48, not 47.999…). Mylar fill ≥ 1 g; custom oxygen container ≥ 1 cc.
+- New tests: `tests/unit/qa-fuzz.test.ts` (every engine, random and edge inputs) and `tests/e2e/qa-explore.spec.ts` (console errors, phone overflow, garbage links, unit round trips, empty fields).
+
+## 2026-11-17: Tools 7, 8 and 9 built (pallet calculator, mylar bag size finder, oxygen absorber calculator)
+
+- `pallets.json`: EPAL 1 (1200 × 800 × 144 mm, 25 kg, 1,500 kg), EPAL 2 (1200 × 1000 × 162 mm, 35 kg, 1,250 kg) and EPAL 3 (144 mm, 30 kg, 1,500 kg) from EPAL data sheets, **verified**. GMA 48 × 40 and 48 × 48 values are typical (unverified, editable). Replaced the ISO 1200 × 1000 seed with EPAL 2/3.
+- `bulk-density.json`: 11 foods from The Engineering ToolBox, **verified**.
+- `mylar-presets.json`: 6 retail bag sizes (72 Hours listings, Canadian Preparedness guide), unverified because sizes vary by maker.
+- `o2-absorbers.json`: Sorbent Systems method (21 % oxygen, 1 g = 1 cc) and #10 can / 5 and 6 gallon pail volumes, **verified**; common packet sizes unverified.
+- New `lib/packing.ts` (uniform and two-block layer patterns).
+- Hub e2e checks every tool has an engine; the layout accessibility suite covers all nine tools.
+
+## 2026-11-17: CI accessibility fix
+
+- Table scroll boxes are now keyboard-focusable named regions. On Linux (CI) fonts are wider, the box finder table overflowed, and axe reported scrollable-region-focusable (serious).
+- New e2e suite `a11y-layouts.spec.ts`: every built tool checked with a wide font and at 390 px.
+
+## 2026-11-17: Tool 6 weight output
+
+- Box volume calculator: weight per carton now always shows its effect: total weight (lb and kg), max cartons by weight, cargo weight per container against the payload, and a working step saying whether space or weight sets the count. No rules changed.
+
 ## 2026-11-17: CI fix
 
 - `pnpm typecheck` now runs `next typegen` first. CI type-checks before building, so the generated `PageProps`, `LayoutProps` and `RouteContext` helpers did not exist there and `tsc` failed.

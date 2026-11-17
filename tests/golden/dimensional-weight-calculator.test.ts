@@ -209,3 +209,31 @@ describe("tool 1 metric and packaging cases (tester review)", () => {
     expect(cubic.tierFt3).toBe(0.2);
   });
 });
+
+// QA review 17 Nov 2026: regressions.
+describe("tool 1 QA regressions", () => {
+  it("DHL rejects a piece over 120 x 80 x 80 cm or 70 kg", () => {
+    const big = run({ l: 200, w: 200, h: 200, weight: 300, carriers: ["dhl"] });
+    expect(big.value.carriers.dhl!.billable).toBeNull();
+    expect(codes(big, "dhl")).toContain("DHL_OVER_PIECE_LIMIT");
+    expect(big.value.lowest).toBeNull();
+    expect(big.ok).toBe(false);
+    const heavy = run({ l: 40, w: 30, h: 20, unit: "cm", weight: 71, carriers: ["dhl"] });
+    expect(codes(heavy, "dhl")).toContain("DHL_OVER_PIECE_LIMIT");
+  });
+
+  it("DHL Oversize Piece over 100 cm longest or 80 cm second side", () => {
+    const r = run({ l: 110, w: 50, h: 40, unit: "cm", weight: 10, carriers: ["dhl"] });
+    const c = r.value.carriers.dhl!;
+    expect(c.billable).not.toBeNull();
+    expect(c.surcharges.map((s) => s.code)).toEqual(["DHL_OVERSIZE_PIECE"]);
+    const ok = run({ l: 100, w: 80, h: 40, unit: "cm", weight: 10, carriers: ["dhl"] });
+    expect(ok.value.carriers.dhl!.surcharges).toEqual([]);
+  });
+
+  it("a tiny positive side rounds up to 1, never 0", () => {
+    const c = run({ l: 1e-9, w: 1e-9, h: 1e-9, weight: 1, carriers: ["ups"] }).value.carriers.ups!;
+    expect(c.roundedDims).toEqual([1, 1, 1]);
+    expect(c.volume).toBe(1);
+  });
+});

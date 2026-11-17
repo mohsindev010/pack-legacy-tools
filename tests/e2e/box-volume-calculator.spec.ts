@@ -38,6 +38,17 @@ test("switching to cm converts the sides and keeps the volume", async ({ page })
   await expect(result(page)).toContainText("0.072 CBM");
 });
 
+test("entering a weight adds totals and payload columns", async ({ page }) => {
+  await page.goto(`${PATH}?l=24&w=18&h=12&u=in&q=1000`);
+  await expect(page.getByRole("table").first()).not.toContainText("Max by weight");
+  await page.getByRole("spinbutton", { name: "Weight per carton" }).fill("20");
+  await expect(result(page)).toContainText("20,000 lb (9,071.85 kg)");
+  const table = page.getByRole("table").first();
+  await expect(table).toContainText("Max by weight");
+  await expect(table).toContainText("3,126");
+  await expect(table).toContainText("2,858 of 28,360 kg (10.1 %)");
+});
+
 test("quote button sends the carton size", async ({ page }) => {
   await page.goto(`${PATH}?l=24&w=18&h=12&u=in&q=1000`);
   await expect(result(page)).toContainText("3,000 ft³");

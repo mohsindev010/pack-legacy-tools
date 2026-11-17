@@ -36,6 +36,10 @@ export type ContainerFit = {
   nominalCount: number;
   /** Load weight of one full container in kg; null without a weight. */
   loadKg: number | null;
+  /** The container's maximum cargo weight (kg). */
+  payloadKg: number;
+  /** Share of the payload a full container uses (0-1); null without a weight. */
+  payloadUsed: number | null;
   reason: "NO_CONTAINER_FIT" | "NO_DOOR_FIT" | null;
 };
 
@@ -49,6 +53,8 @@ export type BoxVolumeValue = {
   total: Volumes;
   /** Total weight in the weight unit; null without a weight. */
   totalWeight: number | null;
+  /** Total weight in kg; null without a weight. */
+  totalWeightKg: number | null;
   containers: ContainerFit[];
 };
 
@@ -140,6 +146,8 @@ function fitContainer(
       utilisation: 0,
       nominalCount,
       loadKg: null,
+      payloadKg: c.payloadKg,
+      payloadUsed: null,
       reason,
     };
   }
@@ -159,6 +167,12 @@ function fitContainer(
     explain.push({
       text: `${P}: payload ${n(c.payloadKg, 0)} kg ÷ ${n(weightKg, 3)} kg per carton = ${n(weightCap, 0)} cartons`,
       ruleRef: `containers.${c.id}.payloadKg`,
+    });
+    explain.push({
+      text:
+        weightCap < best.count
+          ? `${P}: space allows ${n(best.count, 0)} but weight allows only ${n(weightCap, 0)}, so weight sets the count: ${n(weightCap, 0)} cartons`
+          : `${P}: weight allows ${n(weightCap, 0)} and space allows ${n(best.count, 0)}, so space sets the count. A full container carries ${n(best.count * weightKg, 0)} kg of its ${n(c.payloadKg, 0)} kg payload (${n((best.count * weightKg * 100) / c.payloadKg, 1)} %)`,
     });
     if (weightCap < best.count) {
       fit = weightCap;
@@ -214,6 +228,8 @@ function fitContainer(
     utilisation,
     nominalCount,
     loadKg,
+    payloadKg: c.payloadKg,
+    payloadUsed: loadKg === null ? null : loadKg / c.payloadKg,
     reason: null,
   };
 }
@@ -258,7 +274,14 @@ export function calcBoxVolume(
   const totalWeight = hasWeight ? input.weight! * input.qty : null;
   if (input.qty > 1) {
     explain.push({
-      text: `Total for ${n(input.qty, 0)} cartons: ${n(total.ft3, 3)} ft³ = ${n(total.m3, 4)} m³${totalWeight !== null ? `, ${n(totalWeight)} ${wu}` : ""}`,
+      text: `Total for ${n(input.qty, 0)} cartons: ${n(total.ft3, 3)} ft³ = ${n(total.m3, 4)} m³`,
+    });
+  }
+  const totalWeightKg =
+    totalWeight === null ? null : wu === "lb" ? totalWeight * KG_PER_LB : totalWeight;
+  if (totalWeight !== null && totalWeightKg !== null) {
+    explain.push({
+      text: `Weight: ${n(input.qty, 0)} × ${n(input.weight!)} ${wu} = ${n(totalWeight)} ${wu}${wu === "lb" ? ` = ${n(totalWeightKg)} kg` : ` = ${n(totalWeightKg / KG_PER_LB)} lb`}`,
     });
   }
 
@@ -296,6 +319,7 @@ export function calcBoxVolume(
       perCarton,
       total,
       totalWeight,
+      totalWeightKg,
       containers,
     },
     explain,

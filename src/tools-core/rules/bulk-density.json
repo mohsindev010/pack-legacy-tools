@@ -1,5 +1,116 @@
 {
-  "version": "2026-11-12",
-  "note": "Placeholder. Filled in step C (rules data) once the Gate 1 spec of the tool that uses it is approved.",
-  "entries": {}
+  "version": "2026-11-17",
+  "note": "Loose bulk density in kg/m³ (= g/L) as printed by The Engineering ToolBox. Real products vary with grain size, moisture and settling.",
+  "entries": {
+    "rice": {
+      "id": "rice",
+      "name": "Rice (white)",
+      "kgM3": 770,
+      "printedAs": "Rice, clean",
+      "source": "The Engineering ToolBox: bulk density of foods and materials",
+      "sourceUrl": "https://www.engineeringtoolbox.com/foods-materials-bulk-density-d_1819.html",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": "2026-11-17"
+    },
+    "beans": {
+      "id": "beans",
+      "name": "Dry beans",
+      "kgM3": 700,
+      "printedAs": "Beans",
+      "source": "The Engineering ToolBox: bulk density of foods and materials",
+      "sourceUrl": "https://www.engineeringtoolbox.com/foods-materials-bulk-density-d_1819.html",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": "2026-11-17"
+    },
+    "peas": {
+      "id": "peas",
+      "name": "Dried peas",
+      "kgM3": 800,
+      "printedAs": "Peas, dried",
+      "source": "The Engineering ToolBox: bulk density of foods and materials",
+      "sourceUrl": "https://www.engineeringtoolbox.com/foods-materials-bulk-density-d_1819.html",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": "2026-11-17"
+    },
+    "wheat": {
+      "id": "wheat",
+      "name": "Wheat (whole grain)",
+      "kgM3": 770,
+      "printedAs": "Wheat",
+      "source": "The Engineering ToolBox: bulk density of foods and materials",
+      "sourceUrl": "https://www.engineeringtoolbox.com/foods-materials-bulk-density-d_1819.html",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": "2026-11-17"
+    },
+    "corn": {
+      "id": "corn",
+      "name": "Corn kernels",
+      "kgM3": 720,
+      "printedAs": "Corn, shelled",
+      "source": "The Engineering ToolBox: bulk density of foods and materials",
+      "sourceUrl": "https://www.engineeringtoolbox.com/foods-materials-bulk-density-d_1819.html",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": "2026-11-17"
+    },
+    "oats": {
+      "id": "oats",
+      "name": "Oats",
+      "kgM3": 420,
+      "printedAs": "Oats",
+      "source": "The Engineering ToolBox: bulk density of foods and materials",
+      "sourceUrl": "https://www.engineeringtoolbox.com/foods-materials-bulk-density-d_1819.html",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": "2026-11-17"
+    },
+    "flour": {
+      "id": "flour",
+      "name": "Wheat flour",
+      "kgM3": 600,
+      "printedAs": "Flour, wheat",
+      "source": "The Engineering ToolBox: bulk density of foods and materials",
+      "sourceUrl": "https://www.engineeringtoolbox.com/foods-materials-bulk-density-d_1819.html",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": "2026-11-17"
+    },
+    "sugar": {
+      "id": "sugar",
+      "name": "Granulated sugar",
+      "kgM3": 800,
+      "printedAs": "Sugar, granulated",
+      "source": "The Engineering ToolBox: bulk density of foods and materials",
+      "sourceUrl": "https://www.engineeringtoolbox.com/foods-materials-bulk-density-d_1819.html",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": "2026-11-17"
+    },
+    "milk-powder": {
+      "id": "milk-powder",
+      "name": "Whole milk powder",
+      "kgM3": 320,
+      "printedAs": "Milk, whole dried",
+      "source": "The Engineering ToolBox: bulk density of foods and materials",
+      "sourceUrl": "https://www.engineeringtoolbox.com/foods-materials-bulk-density-d_1819.html",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": "2026-11-17"
+    },
+    "coffee-roasted": {
+      "id": "coffee-roasted",
+      "name": "Coffee beans (roasted)",
+      "kgM3": 368,
+      "printedAs": "Coffee, roasted beans",
+      "source": "The Engineering ToolBox: bulk density of foods and materials",
+      "sourceUrl": "https://www.engineeringtoolbox.com/foods-materials-bulk-density-d_1819.html",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": "2026-11-17"
+    },
+    "coffee-ground": {
+      "id": "coffee-ground",
+      "name": "Ground coffee",
+      "kgM3": 400,
+      "printedAs": "Coffee, ground",
+      "source": "The Engineering ToolBox: bulk density of foods and materials",
+      "sourceUrl": "https://www.engineeringtoolbox.com/foods-materials-bulk-density-d_1819.html",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": "2026-11-17"
+    }
+  }
 }

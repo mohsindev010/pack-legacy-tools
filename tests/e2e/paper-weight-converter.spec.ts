@@ -23,9 +23,9 @@ test("converts live by stock type and keeps state in the URL", async ({ page }) 
   await page.goto(PATH);
   await expect(page).toHaveURL(/v=24&f=pt&s=uncoated/); // hydrated
   await expect(result(page)).toContainText("336 GSM");
-  await page.getByLabel("Stock type").selectOption("c1s");
+  await page.getByLabel("Stock type", { exact: true }).selectOption("c1s");
   await expect(result(page)).toContainText("360 GSM");
-  await page.getByLabel("Stock type").selectOption("c2s");
+  await page.getByLabel("Stock type", { exact: true }).selectOption("c2s");
   await page.getByRole("spinbutton", { name: "Value" }).fill("8");
   await expect(result(page)).toContainText("132 GSM");
   await expect(page).toHaveURL(/v=8&f=pt&s=c2s/);
@@ -41,7 +41,7 @@ test("300 GSM uncoated gives 110.7 lb cover and 21.4 pt", async ({ page }) => {
 test("lb text and lb cover use different factors", async ({ page }) => {
   await page.goto(`${PATH}?v=54&f=lb&s=text`);
   await expect(result(page)).toContainText("79.9 GSM");
-  await page.getByLabel("Stock type").selectOption("uncoated");
+  await page.getByLabel("Stock type", { exact: true }).selectOption("uncoated");
   await expect(result(page)).toContainText("146.3 GSM");
 });
 

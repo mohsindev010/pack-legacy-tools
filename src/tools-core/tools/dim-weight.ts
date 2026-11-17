@@ -358,6 +358,36 @@ export function calcCarrier(
     }
   }
 
+  // DHL Express: published piece limits and the Oversize Piece trigger (cm / kg).
+  if (rule.pieceLimits || rule.oversizePiece) {
+    const cm = roundSides(norm.cm);
+    const pl = rule.pieceLimits;
+    if (
+      pl &&
+      (cm[0] > pl.maxCm[0] || cm[1] > pl.maxCm[1] || cm[2] > pl.maxCm[2] || norm.kg > pl.maxKg)
+    ) {
+      flags.push(
+        flag(
+          "error",
+          "DHL_OVER_PIECE_LIMIT",
+          `${P}: over the ${pl.maxCm.join(" x ")} cm / ${pl.maxKg} kg piece limit (this piece: ${dims(cm, "cm", 0)}, ${n(norm.kg)} kg). Not accepted as a standard express piece.`,
+        ),
+      );
+      billable = null;
+    } else if (
+      rule.oversizePiece &&
+      (cm[0] > rule.oversizePiece.longestGtCm || cm[1] > rule.oversizePiece.secondGtCm)
+    ) {
+      const op = rule.oversizePiece;
+      const reasons = [
+        cm[0] > op.longestGtCm && `longest side ${cm[0]} cm > ${op.longestGtCm}`,
+        cm[1] > op.secondGtCm && `second-longest side ${cm[1]} cm > ${op.secondGtCm}`,
+      ].filter((r): r is string => !!r);
+      surcharges.push({ code: "DHL_OVERSIZE_PIECE", label: op.label, reasons });
+      flags.push(flag("warn", "DHL_OVERSIZE_PIECE", `${P}: ${op.label} (${reasons.join("; ")}).`));
+    }
+  }
+
   // USPS limits and nonstandard fees.
   if (usps && rule.limits) {
     if (lbs > rule.limits.maxWeightLb || lg > rule.limits.maxLengthGirth) {

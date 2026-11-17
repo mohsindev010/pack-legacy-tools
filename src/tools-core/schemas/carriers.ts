@@ -68,6 +68,19 @@ export const carrierRuleSchema = z.object({
       maxLengthGirth: z.number(),
     })
     .optional(),
+  /** DHL Express: largest accepted piece (sorted cm) and weight. */
+  pieceLimits: z
+    .object({
+      maxCm: z.tuple([z.number(), z.number(), z.number()]),
+      maxKg: z.number(),
+      label: z.string(),
+      ...meta,
+    })
+    .optional(),
+  /** DHL Express Oversize Piece surcharge trigger (cm). */
+  oversizePiece: z
+    .object({ longestGtCm: z.number(), secondGtCm: z.number(), label: z.string(), ...meta })
+    .optional(),
   nonstandard: z.object({ lengthGtIn: z.array(z.number()), volumeGtIn3: z.number() }).optional(),
   nonrectangular: z
     .object({

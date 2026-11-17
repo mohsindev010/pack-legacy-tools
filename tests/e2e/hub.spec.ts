@@ -38,8 +38,20 @@ test("robots disallows all and llms.txt lists the tools", async ({ request }) =>
   expect(llms).toContain("/tools/pallet-calculator/");
 });
 
-test("API answers 501 for tools without an engine, 404 for unknown tools", async ({ request }) => {
-  expect((await request.get("/api/tools/pallet-calculator/")).status()).toBe(501);
+test("every tool has a working API; unknown tools get 404", async ({ request }) => {
+  for (const slug of [
+    "dimensional-weight-calculator",
+    "standard-box-sizes",
+    "paper-weight-converter",
+    "qr-code-generator",
+    "barcode-generator",
+    "box-volume-calculator",
+    "pallet-calculator",
+    "mylar-bag-size-finder",
+    "oxygen-absorber-calculator",
+  ])
+    // 400 = engine present but inputs missing; 501 would mean no engine.
+    expect([200, 400], slug).toContain((await request.get(`/api/tools/${slug}/`)).status());
   expect((await request.get("/api/tools/not-a-tool/")).status()).toBe(404);
 });
 

@@ -1,0 +1,9 @@
+# Keep LF line endings everywhere (Prettier and CI expect LF), even on Windows
+# with core.autocrlf=true.
+* text=auto eol=lf
+
+# Binary files: never touch.
+*.ico binary
+*.png binary
+*.jpg binary
+*.pdf binary

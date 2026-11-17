@@ -157,7 +157,25 @@
       "minBillableLb": 1,
       "secondarySources": [
         "https://www.dhl.com/discover/en-us/ship-with-dhl/services/get-a-rate-quote-and-transit-time"
-      ]
+      ],
+      "pieceLimits": {
+        "maxCm": [120, 80, 80],
+        "maxKg": 70,
+        "label": "DHL Express piece limit",
+        "source": "DHL Express: weights and sizes 2026 (Netherlands, English)",
+        "sourceUrl": "https://www.dhlexpress.nl/sites/default/files/content/DHL%20Express%20Weights%20%26%20Sizes_NL_ENG_V2_2026.pdf",
+        "effectiveFrom": "2026-01-01",
+        "verifiedOn": null
+      },
+      "oversizePiece": {
+        "longestGtCm": 100,
+        "secondGtCm": 80,
+        "label": "Oversize Piece",
+        "source": "DHL Express: surcharges (Oversize Piece)",
+        "sourceUrl": "https://www.dhl.com/ph-en/home/express/products-and-solutions/products-and-services-overview/surcharges.html",
+        "effectiveFrom": "2026-01-01",
+        "verifiedOn": null
+      }
     }
   }
 }

@@ -1,5 +1,80 @@
 {
-  "version": "2026-11-12",
-  "note": "Placeholder. Filled in step C (rules data) once the Gate 1 spec of the tool that uses it is approved.",
-  "entries": {}
+  "version": "2026-11-17",
+  "note": "Common retail mylar bag sizes, sold by nominal capacity (US quart = 0.946352946 L, US gallon = 3.785411784 L). Dimensions are flat width × height (+ bottom gusset where listed) and differ between makers.",
+  "litersPerQuart": 0.946352946,
+  "defaultHeadspacePct": 10,
+  "bags": {
+    "quart-zip": {
+      "id": "quart-zip",
+      "name": "1 quart stand-up (zip)",
+      "capacityQt": 1,
+      "widthIn": 6,
+      "heightIn": 8,
+      "gussetIn": 2,
+      "source": "72 Hours: 1 Quart Mylar Bag (Ziplock) 6 x 8 x 2 in",
+      "sourceUrl": "https://72hours.ca/products/1-quart-ziplock-mylar-bag",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": null
+    },
+    "quart-open": {
+      "id": "quart-open",
+      "name": "1 quart flat (open end)",
+      "capacityQt": 1,
+      "widthIn": 6,
+      "heightIn": 10,
+      "gussetIn": 0,
+      "source": "72 Hours: 1 Quart Mylar Bag (Open End) 6 x 10 in",
+      "sourceUrl": "https://72hours.ca/products/1-quart-mylar-bag-open-end",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": null
+    },
+    "gallon-zip": {
+      "id": "gallon-zip",
+      "name": "1 gallon stand-up (zip)",
+      "capacityQt": 4,
+      "widthIn": 10,
+      "heightIn": 14,
+      "gussetIn": 4,
+      "source": "72 Hours: 1 Gallon Mylar Bag (Ziplock) 10 x 14 x 4 in",
+      "sourceUrl": "https://72hours.ca/products/1-gallon-ziplock-mylar-bag",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": null
+    },
+    "gallon-open": {
+      "id": "gallon-open",
+      "name": "1 gallon flat (open end)",
+      "capacityQt": 4,
+      "widthIn": 10,
+      "heightIn": 16,
+      "gussetIn": 0,
+      "source": "72 Hours: 1 Gallon Mylar Bag (Open End) 10 x 16 in",
+      "sourceUrl": "https://72hours.ca/products/1-gallon-mylar-bag-open-end",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": null
+    },
+    "2gallon-zip": {
+      "id": "2gallon-zip",
+      "name": "2 gallon stand-up (zip)",
+      "capacityQt": 8,
+      "widthIn": 14,
+      "heightIn": 18,
+      "gussetIn": 6,
+      "source": "72 Hours: 2 Gallon Mylar Bag (Ziplock) 14 x 18 x 6 in",
+      "sourceUrl": "https://72hours.ca/products/2-gallon-ziplock-mylar-bag",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": null
+    },
+    "5gallon-open": {
+      "id": "5gallon-open",
+      "name": "5 gallon flat (open end)",
+      "capacityQt": 20,
+      "widthIn": 20,
+      "heightIn": 30,
+      "gussetIn": 0,
+      "source": "Canadian Preparedness: mylar bags for food storage guide (5 gallon 20 x 30 in)",
+      "sourceUrl": "https://canadianpreparedness.ca/blogs/news/mylar-bags-for-food-storage-guide",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": null
+    }
+  }
 }

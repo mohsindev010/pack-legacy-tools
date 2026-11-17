@@ -7,6 +7,9 @@ import { paperWeightContent } from "./paper-weight-converter";
 import { qrCodeContent } from "./qr-code-generator";
 import { barcodeContent } from "./barcode-generator";
 import { boxVolumeContent } from "./box-volume-calculator";
+import { palletContent } from "./pallet-calculator";
+import { mylarContent } from "./mylar-bag-size-finder";
+import { oxygenContent } from "./oxygen-absorber-calculator";
 
 /**
  * Editorial content for a tool page (section 9, items 6-11), written in step G.
@@ -35,6 +38,9 @@ const content: Partial<Record<string, ToolContent>> = {
   "qr-code-generator": qrCodeContent,
   "barcode-generator": barcodeContent,
   "box-volume-calculator": boxVolumeContent,
+  "pallet-calculator": palletContent,
+  "mylar-bag-size-finder": mylarContent,
+  "oxygen-absorber-calculator": oxygenContent,
 };
 
 export function getContent(slug: string): ToolContent | undefined {

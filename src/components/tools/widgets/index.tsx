@@ -5,6 +5,9 @@ import { PaperWeightWidget } from "./PaperWeightWidget";
 import { QrWidget } from "./QrWidget";
 import { BarcodeWidget } from "./BarcodeWidget";
 import { BoxVolumeWidget } from "./BoxVolumeWidget";
+import { PalletWidget } from "./PalletWidget";
+import { MylarWidget } from "./MylarWidget";
+import { OxygenWidget } from "./OxygenWidget";
 
 /**
  * One client widget per tool (step F). A widget receives the server-computed
@@ -23,6 +26,9 @@ const widgets: Partial<Record<string, ComponentType<WidgetProps>>> = {
   "qr-code-generator": QrWidget,
   "barcode-generator": BarcodeWidget,
   "box-volume-calculator": BoxVolumeWidget,
+  "pallet-calculator": PalletWidget,
+  "mylar-bag-size-finder": MylarWidget,
+  "oxygen-absorber-calculator": OxygenWidget,
 };
 
 export const hasWidget = (slug: string) => slug in widgets;

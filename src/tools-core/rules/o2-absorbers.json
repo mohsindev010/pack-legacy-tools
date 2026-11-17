@@ -1,5 +1,50 @@
 {
-  "version": "2026-11-12",
-  "note": "Placeholder. Filled in step C (rules data) once the Gate 1 spec of the tool that uses it is approved.",
-  "entries": {}
+  "version": "2026-11-17",
+  "method": {
+    "oxygenFraction": 0.21,
+    "productGramsPerCc": 1,
+    "formula": "oxygen (cc) = (container volume − product weight in g as cc) × 0.21",
+    "note": "Sorbent Systems method: product volume = its weight in grams (1 g = 1 cc), so the air between grains (voidspace) is counted with the headspace. Round up to the next absorber size.",
+    "source": "Sorbent Systems: oxygen absorbers, measuring volume of oxygen",
+    "sourceUrl": "https://www.sorbentsystems.com/o2absorbers_1.html",
+    "effectiveFrom": "2026-11-17",
+    "verifiedOn": "2026-11-17"
+  },
+  "containers": {
+    "can10": {
+      "id": "can10",
+      "name": "#10 can",
+      "volumeCc": 3980,
+      "source": "Sorbent Systems: oxygen absorbers, measuring volume of oxygen",
+      "sourceUrl": "https://www.sorbentsystems.com/o2absorbers_1.html",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": "2026-11-17"
+    },
+    "pail5": {
+      "id": "pail5",
+      "name": "5 gallon plastic pail",
+      "volumeCc": 18942,
+      "source": "Sorbent Systems: oxygen absorbers, measuring volume of oxygen",
+      "sourceUrl": "https://www.sorbentsystems.com/o2absorbers_1.html",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": "2026-11-17"
+    },
+    "pail6": {
+      "id": "pail6",
+      "name": "6 gallon plastic pail",
+      "volumeCc": 22730.4,
+      "source": "Sorbent Systems: oxygen absorbers, measuring volume of oxygen",
+      "sourceUrl": "https://www.sorbentsystems.com/o2absorbers_1.html",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": "2026-11-17"
+    }
+  },
+  "packets": {
+    "sizesCc": [50, 100, 300, 500, 750, 1000, 1500, 2000, 2500],
+    "note": "Common retail packet sizes; check what your supplier stocks.",
+    "source": "Common retail packet sizes (Ready Nutrition; Sorbent Systems examples)",
+    "sourceUrl": "https://readynutrition.com/?p=13386",
+    "effectiveFrom": "2026-11-17",
+    "verifiedOn": null
+  }
 }

@@ -20,6 +20,25 @@ import {
 } from "./schemas/barcode";
 import type { Drawing } from "./lib/drawing";
 import { calcBoxVolume } from "./tools/box-volume";
+import { calcPallet } from "./tools/pallet";
+import { findMylarBag } from "./tools/mylar";
+import { calcOxygen } from "./tools/oxygen";
+import {
+  palletFromQuery,
+  palletInputSchema,
+  palletToQuery,
+  type PalletInput,
+} from "./schemas/pallets";
+import {
+  mylarFromQuery,
+  mylarInputSchema,
+  mylarToQuery,
+  o2FromQuery,
+  o2InputSchema,
+  o2ToQuery,
+  type MylarInput,
+  type O2Input,
+} from "./schemas/storage";
 import {
   boxVolumeFromQuery,
   boxVolumeInputSchema,
@@ -123,6 +142,30 @@ const boxVolumeEngine: ToolEngine<BoxVolumeInput, unknown> = {
   fromQuery: boxVolumeFromQuery,
 };
 
+const palletEngine: ToolEngine<PalletInput, unknown> = {
+  schema: palletInputSchema as unknown as z.ZodType<PalletInput>,
+  defaultInput: palletInputSchema.parse({ l: 12, w: 10, h: 8, unit: "in" }),
+  run: calcPallet,
+  toQuery: palletToQuery,
+  fromQuery: palletFromQuery,
+};
+
+const mylarEngine: ToolEngine<MylarInput, unknown> = {
+  schema: mylarInputSchema as unknown as z.ZodType<MylarInput>,
+  defaultInput: mylarInputSchema.parse({ weight: 4, unit: "lb", product: "rice" }),
+  run: findMylarBag,
+  toQuery: mylarToQuery,
+  fromQuery: mylarFromQuery,
+};
+
+const o2Engine: ToolEngine<O2Input, unknown> = {
+  schema: o2InputSchema as unknown as z.ZodType<O2Input>,
+  defaultInput: o2InputSchema.parse({ container: "gallon-zip", weight: 4, weightUnit: "lb" }),
+  run: calcOxygen,
+  toQuery: o2ToQuery,
+  fromQuery: o2FromQuery,
+};
+
 // Engines are registered here as each tool passes step D.
 const engines: Partial<Record<string, ToolEngine<unknown, unknown>>> = {
   "dimensional-weight-calculator": dimWeightEngine as unknown as ToolEngine<unknown, unknown>,
@@ -131,6 +174,9 @@ const engines: Partial<Record<string, ToolEngine<unknown, unknown>>> = {
   "qr-code-generator": qrEngine as unknown as ToolEngine<unknown, unknown>,
   "barcode-generator": barcodeEngine as unknown as ToolEngine<unknown, unknown>,
   "box-volume-calculator": boxVolumeEngine as unknown as ToolEngine<unknown, unknown>,
+  "pallet-calculator": palletEngine as unknown as ToolEngine<unknown, unknown>,
+  "mylar-bag-size-finder": mylarEngine as unknown as ToolEngine<unknown, unknown>,
+  "oxygen-absorber-calculator": o2Engine as unknown as ToolEngine<unknown, unknown>,
 };
 
 export function getEngine(slug: string): ToolEngine<unknown, unknown> | undefined {

@@ -154,7 +154,7 @@ export const tools: ToolMeta[] = [
     title: "Pallet Calculator: Boxes per Pallet & Container Load",
     h1: "Pallet & Container Load Calculator",
     description:
-      "How many cartons fit on a pallet and in a container, using multi-block layer patterns with a diagram, weight limits and door-height checks.",
+      "How many cartons fit on a pallet and how many pallets fit in a container, with two-block layer patterns, a layer diagram, weight limits and door checks.",
     question: "How many cartons fit on a pallet and in a container?",
     category: "size-and-ship",
     primaryKeyword: "pallet calculator",
@@ -197,7 +197,7 @@ export const tools: ToolMeta[] = [
     relatedTools: ["mylar-bag-size-finder"],
     relatedProducts: [],
     author: AUTHOR_TBD,
-    rulesFiles: ["o2-absorbers.json"],
+    rulesFiles: ["o2-absorbers.json", "mylar-presets.json"],
     updated: UPDATED,
   },
 ];
