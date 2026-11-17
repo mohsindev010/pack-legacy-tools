@@ -103,6 +103,9 @@ const n = (x: number, dp = 2) => roundDisplay(x, dp);
 const dims = (d: readonly number[], u: string, dp = 3) =>
   `${d.map((x) => n(x, dp)).join(" x ")} ${u}`;
 
+/** Poly mailers, envelopes and Mylar bags / pouches are USPS "soft packaging" for cubic pricing. */
+const isSoftpack = (p: DimWeightInput["packaging"]) => p === "softpack" || p === "mylar";
+
 function uspsCubic(
   measuredIn: Dims3,
   weightLb: number,
@@ -113,7 +116,7 @@ function uspsCubic(
   const none = (reason: string, measured: number | null = null): UspsCubic => ({
     eligible: false,
     measured,
-    measure: packaging === "softpack" ? "length-plus-width-in" : "ft3",
+    measure: isSoftpack(packaging) ? "length-plus-width-in" : "ft3",
     tierFt3: null,
     priorityMail: false,
     groundAdvantage: false,
@@ -130,7 +133,7 @@ function uspsCubic(
   const step = rules.measuring.truncateEachSideToIn;
   const sorted = sortDesc(measuredIn).map((x) => floorTo(x, step)) as Dims3;
 
-  if (packaging === "softpack") {
+  if (isSoftpack(packaging)) {
     const lw = sorted[0] + sorted[1];
     explain.push({
       text: `USPS cubic (softpack): length + width rounded down to 1/4 in: ${n(sorted[0])} + ${n(sorted[1])} = ${n(lw)} in`,
@@ -192,21 +195,26 @@ export function calcCarrier(
   const explain: ExplainStep[] = [];
   const flags: Flag[] = [];
   const P = rule.name;
-  const metric = rule.ruleUnit === "cm";
-  const lu = rule.ruleUnit;
+  // cm/kg input uses the carrier's published metric divisor (cm³ per kg) when it has one;
+  // otherwise (USPS, and all in/lb input) the inch/pound rules apply.
+  const metric = input.unit === "cm" && !!rule.dimDivisorCm;
+  const lu = metric ? "cm" : "in";
   const wu = metric ? "kg" : "lb";
   const measured = metric ? norm.cm : norm.in;
   const isTube = input.packaging === "tube";
   const usps = rule.id === "usps";
+  const roundSides = (d: Dims3) =>
+    sortDesc(rule.dimRounding === "ceil-each-side-to-whole-unit" ? d.map(ceilUnit) : d);
 
   // 1-2. Round each side (rule), sort longest first.
-  const rounded = sortDesc(
-    rule.dimRounding === "ceil-each-side-to-whole-unit" ? measured.map(ceilUnit) : measured,
-  );
+  const rounded = roundSides(measured);
   explain.push({
     text: `${P}: sides rounded up to whole ${lu === "in" ? "inches" : "cm"}: ${dims(sortDesc(measured), lu)} → ${dims(rounded, lu)}`,
     ruleRef: `${rule.id}.dimRounding`,
   });
+  // Size surcharges and USPS limits are published in inches, so they always use inch sides.
+  const roundedIn = metric ? roundSides(norm.in) : rounded;
+  const boxVolumeIn = roundedIn[0] * roundedIn[1] * roundedIn[2];
 
   // 3. Volume (USPS nonrectangular pieces use the 0.785 factor, DMM 283 1.4.3).
   const boxVolume = rounded[0] * rounded[1] * rounded[2];
@@ -239,7 +247,7 @@ export function calcCarrier(
   }
 
   // 4. Gate (USPS: only above 1 cu ft).
-  const dimApplied = volume > rule.dimAppliesAboveIn3;
+  const dimApplied = (metric ? boxVolumeIn : volume) > rule.dimAppliesAboveIn3;
   if (!dimApplied) {
     explain.push({
       text: `${P}: ${n(volume, 0)} in³ is not more than ${n(rule.dimAppliesAboveIn3, 0)} in³ (1 cu ft), so dimensional weight does not apply`,
@@ -280,17 +288,19 @@ export function calcCarrier(
         : `${P}: billable = greater of ${n(dimWeight)} and ${n(actual)} = ${n(billable)} ${wu}`,
   });
 
-  // 8. Length + girth (rule unit).
-  const lg = lengthPlusGirth(rounded);
+  // 8. Length + girth: shown in the rule unit, checked in inches.
+  const lgShown = lengthPlusGirth(rounded);
+  const lg = lengthPlusGirth(roundedIn);
   const surcharges: Surcharge[] = [];
   const lbs = norm.lb;
 
-  // 9-10. UPS / FedEx surcharges (inch rules).
+  // 9-10. UPS / FedEx surcharges (inch rules, applied to any input unit).
   const s = rule.surcharges;
   if (
-    !metric &&
     s.overMax &&
-    (rounded[0] > s.overMax.longestGt || lg > s.overMax.lengthGirthGt || lbs > s.overMax.weightGtLb)
+    (roundedIn[0] > s.overMax.longestGt ||
+      lg > s.overMax.lengthGirthGt ||
+      lbs > s.overMax.weightGtLb)
   ) {
     flags.push(
       flag(
@@ -300,44 +310,42 @@ export function calcCarrier(
       ),
     );
     billable = null;
-  } else if (!metric) {
+  } else {
     const lp = s.largePackage;
     let lpApplied = false;
     if (lp) {
       const reasons = [
-        rounded[0] > lp.longestGt && `longest side ${rounded[0]} in > ${lp.longestGt}`,
+        roundedIn[0] > lp.longestGt && `longest side ${roundedIn[0]} in > ${lp.longestGt}`,
         lg > lp.lengthGirthGt && `length + girth ${lg} in > ${lp.lengthGirthGt}`,
-        boxVolume > lp.volumeGtIn3 && `volume ${n(boxVolume, 0)} in³ > ${n(lp.volumeGtIn3, 0)}`,
+        boxVolumeIn > lp.volumeGtIn3 && `volume ${n(boxVolumeIn, 0)} in³ > ${n(lp.volumeGtIn3, 0)}`,
         lbs > lp.weightGtLb && `weight ${n(lbs)} lb > ${lp.weightGtLb}`,
       ].filter((r): r is string => !!r);
       if (reasons.length) {
         lpApplied = true;
         surcharges.push({ code: "LARGE_PACKAGE", label: lp.label, reasons });
         flags.push(flag("warn", "LARGE_PACKAGE", `${P}: ${lp.label} (${reasons.join("; ")}).`));
-        if (billable < lp.minBillableLb) {
+        // The minimum is published in lb; in kg it is converted and rounded up to the kg step.
+        const minLp = metric ? ceilTo(lbToKg(lp.minBillableLb), step) : lp.minBillableLb;
+        if (billable < minLp) {
           explain.push({
-            text: `${P}: ${lp.label} minimum billable ${lp.minBillableLb} lb replaces ${n(billable)} lb`,
+            text: `${P}: ${lp.label} minimum billable ${n(minLp)} ${wu}${metric ? ` (${lp.minBillableLb} lb)` : ""} replaces ${n(billable)} ${wu}`,
             ruleRef: `${rule.id}.surcharges.largePackage.minBillableLb`,
           });
           flags.push(
-            flag(
-              "warn",
-              "LARGE_PACKAGE_MIN_APPLIED",
-              `${P}: billed at least ${lp.minBillableLb} lb.`,
-            ),
+            flag("warn", "LARGE_PACKAGE_MIN_APPLIED", `${P}: billed at least ${n(minLp)} ${wu}.`),
           );
-          billable = lp.minBillableLb;
+          billable = minLp;
         }
       }
     }
     const ah = s.additionalHandling;
     if (ah) {
       const reasons = [
-        rounded[0] > ah.longestGt && `longest side ${rounded[0]} in > ${ah.longestGt}`,
-        rounded[1] > ah.secondGt && `second-longest side ${rounded[1]} in > ${ah.secondGt}`,
+        roundedIn[0] > ah.longestGt && `longest side ${roundedIn[0]} in > ${ah.longestGt}`,
+        roundedIn[1] > ah.secondGt && `second-longest side ${roundedIn[1]} in > ${ah.secondGt}`,
         lg > ah.lengthGirthGt && `length + girth ${lg} in > ${ah.lengthGirthGt}`,
         lbs > ah.weightGtLb && `weight ${n(lbs)} lb > ${ah.weightGtLb}`,
-        boxVolume > ah.volumeGtIn3 && `volume ${n(boxVolume, 0)} in³ > ${n(ah.volumeGtIn3, 0)}`,
+        boxVolumeIn > ah.volumeGtIn3 && `volume ${n(boxVolumeIn, 0)} in³ > ${n(ah.volumeGtIn3, 0)}`,
       ].filter((r): r is string => !!r);
       if (reasons.length && lpApplied && ah.suppressedByLargePackage) {
         explain.push({ text: `${P}: ${ah.label} is not added on top of ${lp?.label}` });
@@ -372,7 +380,7 @@ export function calcCarrier(
     }
     const ns = rule.nonstandard;
     if (ns && billable !== null) {
-      const over = [...ns.lengthGtIn].sort((a, b) => b - a).find((t) => rounded[0] > t);
+      const over = [...ns.lengthGtIn].sort((a, b) => b - a).find((t) => roundedIn[0] > t);
       if (over !== undefined) {
         flags.push(
           flag(
@@ -382,7 +390,7 @@ export function calcCarrier(
           ),
         );
       }
-      if (boxVolume > ns.volumeGtIn3) {
+      if (boxVolumeIn > ns.volumeGtIn3) {
         flags.push(
           flag(
             "warn",
@@ -452,7 +460,7 @@ export function calcCarrier(
       actual,
       billable,
       billableLb: billable === null ? null : metric ? kgToLb(billable) : billable,
-      lengthPlusGirth: lg,
+      lengthPlusGirth: lgShown,
       surcharges,
       cubic,
       flags,

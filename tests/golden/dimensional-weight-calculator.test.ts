@@ -148,3 +148,64 @@ describe("tool 1 golden cases (2026 rules)", () => {
     expect(h.savings).toEqual([{ carrier: "ups", name: "UPS", before: 4, after: 3, unit: "lb" }]);
   });
 });
+
+// Tester review 17 Nov 2026: cm/kg input must use each carrier's metric divisor.
+describe("tool 1 metric and packaging cases (tester review)", () => {
+  it("#19 50x40x30 cm, 3 kg, UPS & FedEx -> 60,000 / 5,000 = 12 kg", () => {
+    const r = run({ l: 50, w: 40, h: 30, unit: "cm", weight: 3, carriers: ["ups", "fedex"] });
+    for (const id of ["ups", "fedex"] as const) {
+      const c = r.value.carriers[id]!;
+      expect(c.roundedDims).toEqual([50, 40, 30]);
+      expect(c.volume).toBe(60000);
+      expect(c.divisor).toBe(5000);
+      expect(c.dimWeight).toBe(12);
+      expect(c.billable).toBe(12);
+      expect(c.weightUnit).toBe("kg");
+    }
+  });
+
+  it("#20 30x20x15 cm, 2 kg, UPS -> DIM 1.8 -> 2 kg, billable 2 kg (not 5 lb)", () => {
+    const c = run({ l: 30, w: 20, h: 15, unit: "cm", weight: 2, carriers: ["ups"] }).value.carriers
+      .ups!;
+    expect(c.dimWeight).toBe(2);
+    expect(c.actual).toBe(2);
+    expect(c.billable).toBe(2);
+  });
+
+  it("#21 30.4 x 20 x 15 cm, 1.2 kg, UPS -> sides 31 x 20 x 15 -> 9,300 / 5,000 -> 2 kg", () => {
+    const c = run({ l: 30.4, w: 20, h: 15, unit: "cm", weight: 1.2, carriers: ["ups"] }).value
+      .carriers.ups!;
+    expect(c.roundedDims).toEqual([31, 20, 15]);
+    expect(c.dimWeight).toBe(2);
+    expect(c.actual).toBe(2);
+  });
+
+  it("#22 12x9x4 in, 2.5 lb, DHL -> 432 / 139 -> 4 lb", () => {
+    const c = run({ l: 12, w: 9, h: 4, weight: 2.5, carriers: ["dhl"] }).value.carriers.dhl!;
+    expect(c.divisor).toBe(139);
+    expect(c.dimWeight).toBe(4);
+    expect(c.billable).toBe(4);
+    expect(c.weightUnit).toBe("lb");
+  });
+
+  it("#23 130x30x30 cm, 10 kg, UPS -> 52 in longest side still triggers Additional Handling", () => {
+    const c = run({ l: 130, w: 30, h: 30, unit: "cm", weight: 10, carriers: ["ups"] }).value
+      .carriers.ups!;
+    expect(c.weightUnit).toBe("kg");
+    expect(c.surcharges.map((s) => s.code)).toEqual(["ADDITIONAL_HANDLING"]);
+  });
+
+  it("#24 250x20x20 cm, 10 kg, UPS -> DIM 20 kg, Large Package minimum 90 lb = 41 kg", () => {
+    const r = run({ l: 250, w: 20, h: 20, unit: "cm", weight: 10, carriers: ["ups"] });
+    expect(r.value.carriers.ups!.dimWeight).toBe(20);
+    expect(r.value.carriers.ups!.billable).toBe(41);
+    expect(codes(r, "ups")).toContain("LARGE_PACKAGE_MIN_APPLIED");
+  });
+
+  it("#25 Mylar pouch 12x10 in, 1 lb, USPS -> soft-pack cubic tier 0.2", () => {
+    const cubic = run({ l: 12, w: 10, h: 1, weight: 1, carriers: ["usps"], packaging: "mylar" })
+      .value.carriers.usps!.cubic!;
+    expect(cubic.measure).toBe("length-plus-width-in");
+    expect(cubic.tierFt3).toBe(0.2);
+  });
+});

@@ -1,18 +1,9 @@
 // Step G content for tool 3. Every chart and FAQ number is computed by the
-// engine from paper-grades.json, boards.json and flutes.json (section 13.4).
-import { convertPaperWeight, fmtRange, type PaperWeightValue } from "@core/tools/paper-weight";
+// engine from paper-conversion.json (section 13.4).
+import { convertPaperWeight, type PaperWeightValue } from "@core/tools/paper-weight";
 import { paperWeightInputSchema } from "@core/schemas/paper-weight";
-import {
-  BOARD_IDS,
-  GRADE_IDS,
-  boardRules,
-  gsmPerLb,
-  paperGradeRules,
-  type GradeId,
-} from "@core/schemas/paper";
-import { FLUTE_IDS, fluteRules } from "@core/schemas/boxes";
+import { STOCK_IDS, paperRules, type StockId } from "@core/schemas/paper";
 import { roundDisplay } from "@core/lib/round";
-import { CM_PER_IN, MM_PER_PT, UM_PER_PT } from "@core/lib/units";
 import { ExplainSteps } from "@/src/components/tools/ExplainSteps";
 import { CompareTable } from "@/src/components/tools/CompareTable";
 import type { ToolContent } from "./index";
@@ -20,12 +11,10 @@ import type { ToolContent } from "./index";
 const conv = (raw: Record<string, unknown>) =>
   convertPaperWeight(paperWeightInputSchema.parse(raw));
 const val = (raw: Record<string, unknown>) => conv(raw).value as PaperWeightValue;
-const lb = (v: PaperWeightValue, id: GradeId) => v.grades.find((g) => g.id === id)!.lb.typical;
 const n = (x: number, dp = 1) => roundDisplay(x, dp);
-const grades = paperGradeRules.grades;
-const factor = (id: GradeId) => gsmPerLb(grades[id]);
-const sbs = boardRules.boards.sbs;
-const crb = boardRules.boards.crb;
+const S = paperRules.stocks;
+const L = paperRules.lb;
+const gsmOf = (pt: number, stock: StockId) => val({ value: pt, from: "pt", stock }).gsm;
 
 function Example({ title, raw }: { title: string; raw: Record<string, unknown> }) {
   return (
@@ -36,236 +25,160 @@ function Example({ title, raw }: { title: string; raw: Record<string, unknown> }
   );
 }
 
-const CHART_GSM = [75, 90, 100, 120, 150, 176, 200, 216, 250, 270, 300, 350, 400];
-const CHART_PT = [10, 12, 14, 16, 18, 20, 24];
+const CHART_PT = [8, 10, 12, 14, 16, 18, 20, 22, 24];
+const CHART_LB = [54, 61, 68, 82, 101, 122, 135];
+const CHART_GSM = [80, 100, 120, 150, 200, 250, 300, 350, 400];
 
-const ex300 = val({ value: 300, from: "gsm" });
-const ex350 = val({ value: 350, from: "gsm" });
-const ptGsm = (pt: number, board = "sbs") => val({ value: pt, from: "pt", board }).gsm;
-const text80 = val({ value: 80, from: "lb", grade: "text" }).gsm.typical;
-const cover80 = val({ value: 80, from: "lb", grade: "cover" }).gsm.typical;
-const bond80 = val({ value: 80, from: "lb", grade: "bond" }).gsm.typical;
+const g300 = val({ value: 300, from: "gsm", stock: "uncoated" });
+const g300c2s = val({ value: 300, from: "gsm", stock: "c2s" });
 
 const faq = [
   {
-    q: "How many gsm is 18 pt?",
-    a:
-      `It depends on the board's density. For SBS paperboard (typical ${n(sbs.densityGcm3.typical, 2)} g/cm³), ` +
-      [14, 16, 18, 24]
-        .map((pt) => {
-          const g = ptGsm(pt);
-          return `${pt} pt is about ${n(g.typical, 0)} gsm (${n(g.min, 0)}–${n(g.max, 0)})`;
-        })
-        .join(", ") +
-      `. Caliper (pt) measures thickness and gsm measures weight, so any single conversion number is an estimate. A mill's spec sheet gives the exact figure.`,
+    q: "How do I convert pt to GSM?",
+    a: `Multiply the points by the factor for the stock: ${STOCK_IDS.map((id) => `${S[id].name.toLowerCase()} × ${n(S[id].gsmPerPt, 1)}`).join(", ")}. For example 24 pt uncoated is about ${n(gsmOf(24, "uncoated"), 0)} GSM and 24 pt C1S about ${n(gsmOf(24, "c1s"), 0)} GSM.`,
   },
   {
-    q: "How do I convert gsm to lb?",
-    a: `Divide gsm by the factor for the paper grade: ${(
-      ["bond", "text", "cover", "index"] as const
-    )
-      .map((id) => `${grades[id].name.toLowerCase()} ${n(factor(id), 4)}`)
-      .join(
-        ", ",
-      )}, and ${n(factor("paperboard"), 4)} for paperboard quoted in lb per 1,000 sq ft. To go from lb to gsm, multiply instead. Each factor is 453.59237 g (one pound) divided by the area of that grade's basis ream in square meters.`,
+    q: "How do I convert lb to GSM?",
+    a: `Multiply text-weight pounds by ${L.text.gsmPerLb} and cover (coated) pounds by ${L.cover.gsmPerLb}. 100 lb text is about ${n(100 * L.text.gsmPerLb, 0)} GSM; 100 lb cover is about ${n(100 * L.cover.gsmPerLb, 0)} GSM.`,
   },
   {
-    q: "What is 350 gsm in lb?",
-    a: `350 gsm is ${n(lb(ex350, "cover"))} lb cover, ${n(lb(ex350, "index"))} lb index, ${n(lb(ex350, "text"))} lb text, ${n(lb(ex350, "bond"))} lb bond, or ${n(lb(ex350, "paperboard"))} lb per 1,000 sq ft as paperboard. As SBS board it is about ${n(ex350.caliperPt.typical)} pt thick.`,
+    q: "What is 300 GSM in lb and pt?",
+    a: `300 GSM is about ${n(g300.lb)} lb cover. As uncoated board it is about ${n(g300.pt)} pt (${n(g300.mm, 3)} mm) thick; as C2S coated board about ${n(g300c2s.pt)} pt, because coating adds weight without adding much thickness.`,
   },
   {
-    q: "What does caliper (pt) mean?",
-    a: `Caliper is the thickness of a sheet. In the US it is quoted in points: 1 pt = 0.001 in = ${MM_PER_PT} mm = ${UM_PER_PT} µm. So 18 pt board is 0.018 in (${n(18 * MM_PER_PT, 3)} mm) thick. Folding cartons are usually specified by caliper; paper is usually specified by weight.`,
+    q: "Why does the same pt give a different GSM?",
+    a: "Points measure thickness and GSM measures weight. Coating is dense, so a coated sheet weighs more at the same thickness: C1S adds about 100 to the uncoated factor and C2S about 250 (both sides).",
   },
   {
-    q: 'Why does "80 lb" mean different papers?',
-    a: `US basis weight is the weight of a ream at the grade's own basis sheet size, and each grade uses a different size. 80 lb bond is ${n(bond80)} gsm, 80 lb text is ${n(text80)} gsm and 80 lb cover is ${n(cover80)} gsm. Always say which grade an lb number belongs to, or compare in gsm.`,
+    q: "How do I convert pt to mm?",
+    a: `1 pt is one thousandth of an inch, which is ${paperRules.mmPerPt} mm. So 18 pt is ${n(18 * paperRules.mmPerPt, 3)} mm thick.`,
   },
   {
-    q: "Why do other paper weight charts differ slightly?",
-    a: `Many charts use rounded factors, such as 2.708 for cover or 1.813 for index. The exact factors from the basis ream sizes are ${n(factor("cover"), 4)} and ${n(factor("index"), 4)}, so ${n(300)} gsm is ${n(lb(ex300, "cover"))} lb cover rather than 110.8. The difference is about 0.1 %.`,
+    q: "Are these conversions exact?",
+    a: "No. They are standard approximations by stock type, so every result is shown with ≈ and the formula used. The mill's spec sheet gives the exact figure for a particular board.",
   },
 ];
 
 export const paperWeightContent: ToolContent = {
   answer: (
     <>
-      Convert paper and board between gsm, basis weight in lb (for each grade) and caliper in pt, mm
-      or µm. Caliper is shown as a range from the board&apos;s density, because one fixed number
-      would be wrong for most boards.
+      Convert paper and board between GSM, lb, pt and mm. Pick the stock type (text, uncoated, C1S
+      or C2S) and the converter shows the result in every unit, with the formula for each step.
     </>
   ),
-  ogLine: `300 gsm = ${n(lb(ex300, "cover"))} lb cover ≈ ${n(ex300.caliperPt.typical)} pt SBS`,
+  ogLine: `24 pt uncoated ≈ ${n(gsmOf(24, "uncoated"), 0)} GSM; 24 pt C1S ≈ ${n(gsmOf(24, "c1s"), 0)} GSM`,
   keyTakeaway: (
     <p>
-      To convert gsm to lb, divide by the grade&apos;s factor: {n(factor("cover"), 4)} for cover,{" "}
-      {n(factor("text"), 4)} for text and {n(factor("bond"), 4)} for bond. So 300 gsm is{" "}
-      {n(lb(ex300, "cover"))} lb cover but {n(lb(ex300, "bond"))} lb bond. Caliper (pt) measures
-      thickness, so converting it to gsm needs the board&apos;s density: 300 gsm SBS is{" "}
-      {fmtRange(ex300.caliperPt, 1, "pt")}. Pack Legacy confirms the exact board from the
-      mill&apos;s spec sheet before printing.
+      To convert pt to GSM, multiply by the stock&apos;s factor: {n(S.text.gsmPerPt, 1)} for text
+      stock, {n(S.uncoated.gsmPerPt, 1)} for uncoated, {n(S.c1s.gsmPerPt, 1)} for C1S and{" "}
+      {n(S.c2s.gsmPerPt, 1)} for C2S. To convert lb to GSM, multiply by {L.text.gsmPerLb} for text
+      weight or {L.cover.gsmPerLb} for cover weight. So 24 pt uncoated is about{" "}
+      {n(gsmOf(24, "uncoated"), 0)} GSM, and 300 GSM is about {n(g300.lb)} lb cover. Pack Legacy
+      confirms the exact board from the mill&apos;s spec sheet before printing.
     </p>
   ),
   methodology: (
     <ol>
       <li>
-        <strong>Basis weight to gsm.</strong> Each grade has a basis ream, for example cover is 500
-        sheets of 20 × 26 in. The factor is 453.59237 g ÷ the ream&apos;s area in m², and gsm = lb ×
-        factor. Factors are computed from the ream size, not copied from a chart.
+        <strong>pt to GSM:</strong>{" "}
+        {STOCK_IDS.map((id) => (
+          <span key={id}>
+            {S[id].name}: <code>{S[id].formula}</code>.{" "}
+          </span>
+        ))}
       </li>
       <li>
-        <strong>Paperboard</strong> is quoted in lb per 1,000 sq ft, so its factor is 453.59237 ÷
-        92.90304 = {n(factor("paperboard"), 4)}.
+        <strong>lb to GSM:</strong> text stock <code>{L.text.formula}</code>; cover and coated stock{" "}
+        <code>{L.cover.formula}</code>.
       </li>
       <li>
-        <strong>Caliper units</strong> are exact: 1 pt = 0.001 in = 25.4 µm, 1 mm = 1,000 µm.
+        <strong>pt to mm:</strong> 1 pt = 0.001 in = {paperRules.mmPerPt} mm (exact).
       </li>
       <li>
-        <strong>gsm to caliper</strong>: thickness (µm) = gsm ÷ density (g/cm³). Each board type has
-        a minimum, typical and maximum density, so the result is a range with the typical value
-        first.
+        <strong>Other directions</strong> divide instead of multiply, so every unit is converted
+        through GSM.
       </li>
     </ol>
   ),
   workedExamples: (
     <>
+      <Example title="24 pt uncoated to GSM" raw={{ value: 24, from: "pt", stock: "uncoated" }} />
+      <Example title="24 pt C1S to GSM" raw={{ value: 24, from: "pt", stock: "c1s" }} />
+      <Example title="54 lb text to GSM" raw={{ value: 54, from: "lb", stock: "text" }} />
       <Example
-        title="300 gsm to lb cover and pt"
-        raw={{ value: 300, from: "gsm", grade: "cover" }}
+        title="300 GSM uncoated to lb and pt"
+        raw={{ value: 300, from: "gsm", stock: "uncoated" }}
       />
-      <Example title="16 pt SBS to gsm" raw={{ value: 16, from: "pt", board: "sbs" }} />
-      <Example title="100 lb cover to gsm" raw={{ value: 100, from: "lb", grade: "cover" }} />
     </>
   ),
   referenceTables: (
     <>
-      <h3>Paper weight chart (gsm to lb by grade)</h3>
+      <h3>PT to GSM chart by stock type</h3>
       <CompareTable
-        caption={`Basis weight for common grammages; caliper for SBS at ${n(sbs.densityGcm3.typical, 2)} g/cm³ (typical)`}
-        columns={[
-          { key: "gsm", label: "gsm" },
-          { key: "bond", label: "Bond (lb)" },
-          { key: "text", label: "Text (lb)" },
-          { key: "cover", label: "Cover (lb)" },
-          { key: "index", label: "Index (lb)" },
-          { key: "pt", label: "SBS caliper (pt)" },
-        ]}
-        rows={CHART_GSM.map((gsm) => {
-          const v = val({ value: gsm, from: "gsm" });
-          return {
-            gsm: String(gsm),
-            bond: n(lb(v, "bond")),
-            text: n(lb(v, "text")),
-            cover: n(lb(v, "cover")),
-            index: n(lb(v, "index")),
-            pt: `≈ ${n(v.caliperPt.typical)}`,
-          };
-        })}
-      />
-      <h3>Paperboard caliper chart (pt to gsm)</h3>
-      <CompareTable
-        caption="Estimated grammage by caliper; ranges come from each board's density range"
+        caption="Approximate GSM for each caliper"
         columns={[
           { key: "pt", label: "Caliper" },
           { key: "mm", label: "mm" },
-          { key: "sbs", label: "SBS (gsm)" },
-          { key: "crb", label: "CRB (gsm)" },
-          { key: "lbft", label: "SBS (lb / 1,000 sq ft)" },
+          ...STOCK_IDS.map((id) => ({ key: id, label: S[id].name })),
         ]}
-        rows={CHART_PT.map((pt) => {
-          const s = ptGsm(pt, "sbs");
-          const c = ptGsm(pt, "crb");
-          return {
-            pt: `${pt} pt`,
-            mm: n(pt * MM_PER_PT, 3),
-            sbs: `${n(s.typical, 0)} (${n(s.min, 0)}–${n(s.max, 0)})`,
-            crb: `${n(c.typical, 0)} (${n(c.min, 0)}–${n(c.max, 0)})`,
-            lbft: n(s.typical / factor("paperboard"), 0),
-          };
-        })}
+        rows={CHART_PT.map((pt) => ({
+          pt: `${pt} pt`,
+          mm: n(pt * paperRules.mmPerPt, 3),
+          ...Object.fromEntries(STOCK_IDS.map((id) => [id, `≈ ${n(gsmOf(pt, id), 0)}`])),
+        }))}
       />
-      <h3>Basis ream sizes and exact factors</h3>
+      <h3>Text and cover weight (lb) to GSM</h3>
       <CompareTable
         columns={[
-          { key: "grade", label: "Grade" },
-          { key: "basis", label: "Basis size" },
-          { key: "factor", label: "gsm per lb" },
+          { key: "lb", label: "lb" },
+          { key: "text", label: "Text stock (GSM)" },
+          { key: "cover", label: "Cover / coated (GSM)" },
         ]}
-        rows={GRADE_IDS.map((id) => {
-          const g = grades[id];
-          return {
-            grade: g.name,
-            basis:
-              "basisAreaFt2" in g
-                ? `${roundDisplay(g.basisAreaFt2, 0)} sq ft`
-                : `${g.basisSheetIn.map((x) => n(x, 2)).join(" × ")} in, ${g.sheetsPerReam} sheets`,
-            factor: n(factor(id), 4),
-          };
-        })}
+        rows={CHART_LB.map((lb) => ({
+          lb: `${lb} lb`,
+          text: `≈ ${n(lb * L.text.gsmPerLb, 0)}`,
+          cover: `≈ ${n(lb * L.cover.gsmPerLb, 0)}`,
+        }))}
       />
-      <h3>Board density ranges used</h3>
+      <h3>GSM to lb and pt</h3>
       <CompareTable
+        caption="Caliper shown for uncoated and C2S coated board"
         columns={[
-          { key: "board", label: "Board" },
-          { key: "density", label: "Density (g/cm³)" },
+          { key: "gsm", label: "GSM" },
+          { key: "text", label: "lb text" },
+          { key: "cover", label: "lb cover" },
+          { key: "unc", label: "Uncoated (pt)" },
+          { key: "c2s", label: "C2S (pt)" },
         ]}
-        rows={BOARD_IDS.map((id) => {
-          const d = boardRules.boards[id].densityGcm3;
-          return {
-            board: boardRules.boards[id].name,
-            density: `${n(d.min, 2)}–${n(d.max, 2)}, typical ${n(d.typical, 2)}`,
-          };
-        })}
-      />
-      <h3>Corrugated flute thickness (reference)</h3>
-      <CompareTable
-        caption="Nominal board thickness by flute; corrugated is sold by flute and test, not gsm"
-        columns={[
-          { key: "flute", label: "Flute" },
-          { key: "in", label: "Inches" },
-          { key: "mm", label: "mm" },
-        ]}
-        rows={FLUTE_IDS.map((id) => {
-          const fl = fluteRules.flutes[id];
-          return {
-            flute: fl.name,
-            in: n(fl.caliperIn, 4),
-            mm: n(fl.caliperIn * CM_PER_IN * 10, 1),
-          };
-        })}
+        rows={CHART_GSM.map((gsm) => ({
+          gsm: String(gsm),
+          text: n(gsm / L.text.gsmPerLb),
+          cover: n(gsm / L.cover.gsmPerLb),
+          unc: n(gsm / S.uncoated.gsmPerPt),
+          c2s: n(gsm / S.c2s.gsmPerPt),
+        }))}
       />
     </>
   ),
   commonMistakes: (
     <ul>
       <li>
-        <strong>Quoting lb without the grade.</strong> &ldquo;80 lb&rdquo; is {n(bond80, 0)} gsm as
-        bond but {n(cover80, 0)} gsm as cover.
+        <strong>Quoting lb without saying text or cover.</strong> 80 lb text is about{" "}
+        {n(80 * L.text.gsmPerLb, 0)} GSM, but 80 lb cover is about {n(80 * L.cover.gsmPerLb, 0)}{" "}
+        GSM.
       </li>
       <li>
-        <strong>Treating pt and gsm as the same thing.</strong> One is thickness, the other weight.
-        A dense board is thinner at the same gsm.
+        <strong>Treating pt and GSM as the same thing.</strong> One is thickness, the other weight.
       </li>
       <li>
-        <strong>Trusting one fixed pt-to-gsm number.</strong> 16 pt SBS can be anywhere from{" "}
-        {n(ptGsm(16).min, 0)} to {n(ptGsm(16).max, 0)} gsm depending on the mill.
+        <strong>Ignoring coating.</strong> 16 pt C2S is about {n(gsmOf(16, "c2s"), 0)} GSM, but 16
+        pt uncoated only about {n(gsmOf(16, "uncoated"), 0)} GSM.
       </li>
       <li>
-        <strong>Using rounded factors as exact.</strong> 2.708 for cover is a rounding; the exact
-        factor is {n(factor("cover"), 4)}.
-      </li>
-      <li>
-        <strong>Assuming every board weighs the same at one caliper.</strong> At 16 pt, typical{" "}
-        {sbs.name} is about {n(ptGsm(16, "sbs").typical, 0)} gsm and typical {crb.name} about{" "}
-        {n(ptGsm(16, "crb").typical, 0)} gsm, because their densities differ.
+        <strong>Treating an approximation as a spec.</strong> Use the mill&apos;s data sheet for the
+        exact board.
       </li>
     </ul>
   ),
   faq,
-  extraSources: [
-    {
-      source: "Wikipedia: Grammage (basis ream sizes)",
-      sourceUrl: "https://en.wikipedia.org/wiki/Grammage",
-    },
-  ],
 };

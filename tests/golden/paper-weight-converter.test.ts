@@ -1,146 +1,93 @@
-// Golden cases from specs/paper-weight-converter.md (Gate 1). Never edit an
+// Golden cases for tool 3, from the worked examples and tables on the Custom Box
+// Makers paper weight chart (tester requirement, 17 Nov 2026). Never edit an
 // expected value to match the code.
 import { describe, expect, it } from "vitest";
-import { convertPaperWeight, ptFromGsm, type PaperWeightValue } from "@core/tools/paper-weight";
-import { paperWeightInputSchema } from "@core/schemas/paper-weight";
-import { GRADE_IDS, gsmPerLb, paperGradeRules } from "@core/schemas/paper";
+import { convertPaperWeight, type PaperWeightValue } from "@core/tools/paper-weight";
+import {
+  paperWeightFromQuery,
+  paperWeightInputSchema,
+  paperWeightToQuery,
+} from "@core/schemas/paper-weight";
 
-const run = (raw: Record<string, unknown>) => convertPaperWeight(paperWeightInputSchema.parse(raw));
-const val = (raw: Record<string, unknown>) => run(raw).value as PaperWeightValue;
-const lbIn = (v: PaperWeightValue, id: string) => v.grades.find((g) => g.id === id)!.lb.typical;
-const r1 = (x: number) => Math.round(x * 10) / 10;
+const val = (raw: Record<string, unknown>) =>
+  convertPaperWeight(paperWeightInputSchema.parse(raw)).value as PaperWeightValue;
+const r = (x: number, dp = 1) => Math.round(x * 10 ** dp) / 10 ** dp;
+const gsm = (value: number, stock: string) => val({ value, from: "pt", stock }).gsm;
 
-describe("tool 3 factors", () => {
-  it("exact factors derive from the basis ream (D1)", () => {
-    const f = Object.fromEntries(GRADE_IDS.map((id) => [id, gsmPerLb(paperGradeRules.grades[id])]));
-    expect(f.bond).toBeCloseTo(3.7597, 4);
-    expect(f.text).toBeCloseTo(1.4801, 4);
-    expect(f.cover).toBeCloseTo(2.7041, 4);
-    expect(f.index).toBeCloseTo(1.808, 4);
-    expect(f.bristolTag).toBeCloseTo(2.1928, 4);
-    expect(f.tissue).toBeCloseTo(1.6953, 4);
-    expect(f.newsprint).toBeCloseTo(1.6275, 4);
-    expect(f.paperboard).toBeCloseTo(4.8824, 4);
+describe("tool 3 golden cases (Custom Box Makers examples)", () => {
+  it("#1 20 pt text stock ≈ 120 GSM", () => expect(gsm(20, "text")).toBe(120));
+  it("#2 24 pt uncoated ≈ 336 GSM", () => expect(gsm(24, "uncoated")).toBe(336));
+  it("#3 24 pt C1S (medium coating) ≈ 360 GSM", () => expect(gsm(24, "c1s")).toBe(360));
+  it("#4 8 pt C2S (medium + high coating) ≈ 132 GSM", () => expect(gsm(8, "c2s")).toBe(132));
+
+  it("#5 the site's PT tables", () => {
+    expect([10, 12, 14, 16, 18].map((p) => gsm(p, "text"))).toEqual([60, 72, 84, 96, 108]);
+    expect([10, 12, 14, 16, 18].map((p) => gsm(p, "uncoated"))).toEqual([140, 168, 196, 224, 252]);
+    expect([10, 12, 14, 16, 18].map((p) => gsm(p, "c1s"))).toEqual([150, 180, 210, 240, 270]);
+    expect([10, 12, 14, 16, 18, 20, 22, 24].map((p) => gsm(p, "c2s"))).toEqual([
+      165, 198, 231, 264, 297, 330, 363, 396,
+    ]);
+  });
+
+  it("#6 54 lb text ≈ 80 GSM; 54 lb coated ≈ 146 GSM", () => {
+    expect(r(val({ value: 54, from: "lb", stock: "text" }).gsm, 0)).toBe(80);
+    expect(r(val({ value: 54, from: "lb", stock: "c1s" }).gsm, 0)).toBe(146);
+  });
+
+  it("#7 300 GSM uncoated -> 110.7 lb cover, 21.4 pt, 0.544 mm", () => {
+    const v = val({ value: 300, from: "gsm", stock: "uncoated" });
+    expect(r(v.lb)).toBe(110.7);
+    expect(v.lbBasis).toBe("cover");
+    expect(r(v.pt)).toBe(21.4);
+    expect(r(v.mm, 3)).toBe(0.544);
+  });
+
+  it("#8 300 GSM text -> 202.7 lb text, 50 pt", () => {
+    const v = val({ value: 300, from: "gsm", stock: "text" });
+    expect(r(v.lb)).toBe(202.7);
+    expect(v.lbBasis).toBe("text");
+    expect(v.pt).toBe(50);
+  });
+
+  it("#9 0.5 mm uncoated -> 19.7 pt -> 275.6 GSM", () => {
+    const v = val({ value: 0.5, from: "mm", stock: "uncoated" });
+    expect(r(v.pt)).toBe(19.7);
+    expect(r(v.gsm)).toBe(275.6);
+    expect(v.mm).toBeCloseTo(0.5, 12);
+  });
+
+  it("#10 the stock table shows the same GSM on all four stocks", () => {
+    const v = val({ value: 336, from: "gsm", stock: "uncoated" });
+    expect(v.stocks.map((s) => [s.id, r(s.pt)])).toEqual([
+      ["text", 56],
+      ["uncoated", 24],
+      ["c1s", 22.4],
+      ["c2s", 20.4],
+    ]);
   });
 });
 
-describe("tool 3 golden cases", () => {
-  it("#1 300 gsm -> 110.9 cover, 79.8 bond, 202.7 text, 165.9 index, 61.4 board", () => {
-    const v = val({ value: 300, from: "gsm" });
-    expect(r1(lbIn(v, "cover"))).toBe(110.9);
-    expect(r1(lbIn(v, "bond"))).toBe(79.8);
-    expect(r1(lbIn(v, "text"))).toBe(202.7);
-    expect(r1(lbIn(v, "index"))).toBe(165.9);
-    expect(r1(lbIn(v, "paperboard"))).toBe(61.4);
-  });
-
-  it("#2 80 lb text -> 118.4 gsm", () => {
-    expect(r1(val({ value: 80, from: "lb", grade: "text" }).gsm.typical)).toBe(118.4);
-  });
-
-  it("#3 100 lb cover -> 270.4 gsm (not 270.8)", () => {
-    expect(r1(val({ value: 100, from: "lb", grade: "cover" }).gsm.typical)).toBe(270.4);
-  });
-
-  it("#4 12 pt SBS -> typical 256 gsm", () => {
-    const v = val({ value: 12, from: "pt", board: "sbs" });
-    expect(v.caliperUm.typical).toBeCloseTo(304.8, 6);
-    expect(Math.round(v.gsm.typical)).toBe(256);
-  });
-
-  it("#5 300 gsm at density 0.70 / 0.84 / 1.00 -> 16.9 / 14.1 / 11.8 pt", () => {
-    expect(r1(ptFromGsm(300, 0.7))).toBe(16.9);
-    expect(r1(ptFromGsm(300, 0.84))).toBe(14.1);
-    expect(r1(ptFromGsm(300, 1))).toBe(11.8);
-    const v = val({ value: 300, from: "gsm", board: "sbs" });
-    expect(r1(v.caliperPt.typical)).toBe(14.1);
-    expect(r1(v.caliperPt.min)).toBe(13.6);
-    expect(r1(v.caliperPt.max)).toBe(16.2);
-  });
-
-  it("#6 50 lb with no grade -> GRADE_REQUIRED error", () => {
-    const r = run({ value: 50, from: "lb" });
-    expect(r.ok).toBe(false);
-    expect(r.value).toBeNull();
-    expect(r.flags.map((f) => f.code)).toEqual(["GRADE_REQUIRED"]);
-  });
-
-  it("#7 16 pt SBS -> 297-354 gsm, typical 341", () => {
-    const g = val({ value: 16, from: "pt", board: "sbs" }).gsm;
-    expect([Math.round(g.min), Math.round(g.typical), Math.round(g.max)]).toEqual([297, 341, 354]);
-  });
-
-  it("#8 69 lb / 1,000 sq ft paperboard -> 337 gsm", () => {
-    expect(Math.round(val({ value: 69, from: "lb", grade: "paperboard" }).gsm.typical)).toBe(337);
-  });
-
-  it("#9 0.5 mm -> 19.7 pt = 500 µm", () => {
-    const v = val({ value: 0.5, from: "mm" });
-    expect(v.caliperUm.typical).toBeCloseTo(500, 9);
-    expect(r1(v.caliperPt.typical)).toBe(19.7);
-  });
-});
-
-describe("tool 3 properties", () => {
-  it("gsm -> lb -> gsm round-trips for every grade", () => {
-    for (const gsm of [17, 80, 118.4, 300, 450, 1200]) {
-      for (const id of GRADE_IDS) {
-        const lb = lbIn(val({ value: gsm, from: "gsm" }), id);
-        expect(val({ value: lb, from: "lb", grade: id }).gsm.typical).toBeCloseTo(gsm, 9);
-      }
+describe("tool 3 round trips and input", () => {
+  it("converting the result back gives the input", () => {
+    for (const stock of ["text", "uncoated", "c1s", "c2s"]) {
+      const a = val({ value: 18, from: "pt", stock });
+      expect(val({ value: a.gsm, from: "gsm", stock }).pt).toBeCloseTo(18, 9);
+      expect(val({ value: a.lb, from: "lb", stock }).gsm).toBeCloseTo(a.gsm, 9);
+      expect(val({ value: a.mm, from: "mm", stock }).gsm).toBeCloseTo(a.gsm, 9);
     }
   });
 
-  it("pt <-> mm <-> µm round-trip", () => {
-    for (const pt of [8, 12, 18, 24.5]) {
-      const v = val({ value: pt, from: "pt" });
-      expect(val({ value: v.caliperMm.typical, from: "mm" }).caliperPt.typical).toBeCloseTo(pt, 9);
-      expect(val({ value: v.caliperUm.typical, from: "um" }).caliperPt.typical).toBeCloseTo(pt, 9);
-    }
+  it("every result is marked approximate and shows its working", () => {
+    const res = convertPaperWeight(paperWeightInputSchema.parse({ value: 24, from: "pt" }));
+    expect(res.flags.map((f) => f.code)).toEqual(["APPROXIMATE"]);
+    expect(res.explain.length).toBeGreaterThanOrEqual(3);
+    expect(res.explain[0]!.formula).toBe("GSM ≈ PT × 1400 / 100");
   });
 
-  it("a higher density always gives a thinner caliper", () => {
-    for (const gsm of [150, 300, 600]) {
-      let prev = Infinity;
-      for (const d of [0.6, 0.7, 0.8, 0.84, 0.9, 1.1]) {
-        const pt = ptFromGsm(gsm, d);
-        expect(pt).toBeLessThan(prev);
-        prev = pt;
-      }
-      const c = val({ value: gsm, from: "gsm" }).caliperPt;
-      expect(c.min).toBeLessThanOrEqual(c.typical);
-      expect(c.typical).toBeLessThanOrEqual(c.max);
-    }
-  });
-
-  it("weight input is exact; caliper input gives a gsm range", () => {
-    const w = val({ value: 300, from: "gsm" });
-    expect(w.gsm.min).toBe(w.gsm.max);
-    const c = val({ value: 16, from: "pt" });
-    expect(c.gsm.min).toBeLessThan(c.gsm.max);
-    expect(c.caliperUm.min).toBe(c.caliperUm.max);
-  });
-
-  it("flags density estimate and mill-spec note; rejects absurd values", () => {
-    const codes = run({ value: 300, from: "gsm" }).flags.map((f) => f.code);
-    expect(codes).toEqual(expect.arrayContaining(["DENSITY_ESTIMATE", "MILL_SPEC_WINS"]));
-    expect(paperWeightInputSchema.safeParse({ value: 6000, from: "gsm" }).success).toBe(false);
+  it("rejects bad input and round-trips the URL", () => {
+    expect(paperWeightInputSchema.safeParse({ value: 0 }).success).toBe(false);
     expect(paperWeightInputSchema.safeParse({ value: 300, from: "pt" }).success).toBe(false);
-    expect(paperWeightInputSchema.safeParse({ value: 0, from: "gsm" }).success).toBe(false);
-  });
-
-  it("runs through the engine registry from a URL query", async () => {
-    const { getEngine, parseInput } = await import("@core/engines");
-    const e = getEngine("paper-weight-converter")!;
-    const p = parseInput(e, e.fromQuery({ v: "16", f: "pt", b: "crb", g: "index" }));
-    expect(p.ok).toBe(true);
-    if (!p.ok) return;
-    expect(e.fromQuery(e.toQuery(p.input))).toMatchObject({
-      value: "16",
-      from: "pt",
-      board: "crb",
-      grade: "index",
-    });
-    expect(parseInput(e, e.fromQuery({ v: "abc" })).ok).toBe(false);
+    const i = paperWeightInputSchema.parse({ value: 16, from: "pt", stock: "c2s" });
+    expect(paperWeightInputSchema.parse(paperWeightFromQuery(paperWeightToQuery(i)))).toEqual(i);
   });
 });

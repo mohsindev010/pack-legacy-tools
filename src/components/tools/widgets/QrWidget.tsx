@@ -19,8 +19,8 @@ import { NumberField } from "../NumberField";
 import { TextField, SelectField, ColorPair } from "../TextField";
 import { ToolForm } from "../ToolForm";
 import { ResultCard } from "../ResultCard";
-import { ExplainSteps } from "../ExplainSteps";
 import { QuoteCTA } from "../QuoteCTA";
+import { HowItWorks } from "../HowItWorks";
 import { CodePreview, DownloadButtons, drawToCanvas } from "../CodePreview";
 import { hashInputs, track } from "../analytics";
 import { readQuery, writeQuery } from "../urlState";
@@ -464,12 +464,7 @@ export function QrWidget({ slug }: WidgetProps) {
             </div>
           </>
         )}
-        {shown && (
-          <details className={f.more}>
-            <summary>Show the working ({shown.result.explain.length} steps)</summary>
-            <ExplainSteps steps={shown.result.explain} title="Step by step" />
-          </details>
-        )}
+        {shown && <HowItWorks steps={shown.result.explain} />}
       </div>
     </div>
   );

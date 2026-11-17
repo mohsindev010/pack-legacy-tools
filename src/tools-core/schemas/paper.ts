@@ -1,8 +1,6 @@
-// Shape of paper-grades.json and boards.json, validated at load.
+// Shape of paper-conversion.json, validated at load.
 import { z } from "zod";
-import gradesJson from "../rules/paper-grades.json";
-import boardsJson from "../rules/boards.json";
-import { G_PER_LB, M2_PER_FT2, M2_PER_IN2 } from "../lib/units";
+import conversionJson from "../rules/paper-conversion.json";
 
 const meta = {
   source: z.string().min(1),
@@ -14,81 +12,43 @@ const meta = {
     .nullable(),
 };
 
-export const GRADE_IDS = [
-  "bond",
-  "text",
-  "cover",
-  "index",
-  "bristolTag",
-  "tissue",
-  "newsprint",
-  "paperboard",
-] as const;
-export type GradeId = (typeof GRADE_IDS)[number];
+export const STOCK_IDS = ["text", "uncoated", "c1s", "c2s"] as const;
+export type StockId = (typeof STOCK_IDS)[number];
+export const LB_BASES = ["text", "cover"] as const;
+export type LbBasis = (typeof LB_BASES)[number];
 
-const gradeSchema = z.union([
-  z.object({
-    id: z.string(),
-    name: z.string(),
-    basisSheetIn: z.tuple([z.number().positive(), z.number().positive()]),
-    sheetsPerReam: z.number().int().positive(),
-    ...meta,
-  }),
-  z.object({ id: z.string(), name: z.string(), basisAreaFt2: z.number().positive(), ...meta }),
-]);
-export type Grade = z.infer<typeof gradeSchema>;
-
-export const paperGradesFileSchema = z.object({
-  version: z.string(),
-  grades: z.object(
-    Object.fromEntries(GRADE_IDS.map((id) => [id, gradeSchema])) as Record<
-      GradeId,
-      typeof gradeSchema
-    >,
-  ),
-});
-export type PaperGradesFile = z.infer<typeof paperGradesFileSchema>;
-
-export const BOARD_IDS = ["sbs", "crb"] as const;
-export type BoardId = (typeof BOARD_IDS)[number];
-
-const rangeSchema = z
-  .object({
-    min: z.number().positive(),
-    typical: z.number().positive(),
-    max: z.number().positive(),
-  })
-  .refine((r) => r.min <= r.typical && r.typical <= r.max, "Expected min <= typical <= max");
-
-const boardSchema = z.object({
-  id: z.string(),
+const stockSchema = z.object({
+  id: z.enum(STOCK_IDS),
   name: z.string(),
-  material: z.string(),
-  densityGcm3: rangeSchema,
+  /** GSM per point of caliper for this stock. */
+  gsmPerPt: z.number().positive(),
+  formula: z.string(),
+  /** Which lb factor this stock is quoted in. */
+  lbBasis: z.enum(LB_BASES),
   ...meta,
 });
-export type Board = z.infer<typeof boardSchema>;
+export type Stock = z.infer<typeof stockSchema>;
 
-export const boardsFileSchema = z.object({
-  version: z.string(),
-  boards: z.object(
-    Object.fromEntries(BOARD_IDS.map((id) => [id, boardSchema])) as Record<
-      BoardId,
-      typeof boardSchema
-    >,
-  ),
+const lbSchema = z.object({
+  id: z.enum(LB_BASES),
+  name: z.string(),
+  gsmPerLb: z.number().positive(),
+  formula: z.string(),
+  ...meta,
 });
-export type BoardsFile = z.infer<typeof boardsFileSchema>;
 
-export const paperGradeRules: PaperGradesFile = paperGradesFileSchema.parse(gradesJson);
-export const boardRules: BoardsFile = boardsFileSchema.parse(boardsJson);
+export const paperConversionFileSchema = z.object({
+  version: z.string(),
+  note: z.string().optional(),
+  stocks: z.object({
+    text: stockSchema,
+    uncoated: stockSchema,
+    c1s: stockSchema,
+    c2s: stockSchema,
+  }),
+  lb: z.object({ text: lbSchema, cover: lbSchema }),
+  mmPerPt: z.number().positive(),
+});
+export type PaperConversionFile = z.infer<typeof paperConversionFileSchema>;
 
-/** Basis area in m² (one ream, or 1,000 ft² for paperboard). */
-export function basisAreaM2(g: Grade): number {
-  return "basisAreaFt2" in g
-    ? g.basisAreaFt2 * M2_PER_FT2
-    : g.basisSheetIn[0] * g.basisSheetIn[1] * g.sheetsPerReam * M2_PER_IN2;
-}
-
-/** Exact gsm per lb of basis weight, derived from the basis ream (never typed in). */
-export const gsmPerLb = (g: Grade): number => G_PER_LB / basisAreaM2(g);
+export const paperRules: PaperConversionFile = paperConversionFileSchema.parse(conversionJson);

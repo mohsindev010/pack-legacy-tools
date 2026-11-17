@@ -157,3 +157,23 @@ Property tests: gsm → lb → gsm round-trips for every grade; pt ↔ mm ↔ µ
 | Gate 2 | Needs a Vercel preview |
 
 Open: board densities need Pack Legacy's supplier spec sheets (SBS, CRB, CUK, greyboard).
+
+---
+
+## Tester review, 17 Nov 2026 (supersedes the method above)
+
+The Pack Legacy tester marked the density-based results as wrong and asked for the calculation used by the Custom Box Makers paper weight chart (https://www.customboxmakers.com/paper-weight-chart/). The tool now uses that method; `paper-grades.json` and `boards.json` were replaced by `paper-conversion.json`.
+
+| Conversion | Formula (from the page) |
+|---|---|
+| Text stock, pt → GSM | GSM ≈ PT × 600 / 100 (× 6) |
+| Uncoated, pt → GSM | GSM ≈ PT × 1400 / 100 (× 14) |
+| C1S coated, pt → GSM | GSM ≈ PT × (1400 + 100) / 100 (× 15, medium coating) |
+| C2S coated, pt → GSM | GSM ≈ PT × (1400 + 100 + 150) / 100 (× 16.5, medium + high coating) |
+| Text, lb → GSM | GSM ≈ lbs × 1.48 |
+| Cover / coated, lb → GSM | GSM ≈ lbs × 2.71 (used for uncoated, C1S and C2S stock) |
+| pt → mm | × 0.0254 (exact) |
+
+Inputs: value; unit GSM, lb, pt or mm; stock type. Every result is converted through GSM and shown in all four units, with the working always visible.
+
+Golden cases (tests/golden/paper-weight-converter.test.ts): the page's worked examples (20 pt text 120, 24 pt uncoated 336, 24 pt C1S 360, 8 pt C2S 132), all rows of its PT tables, 54 lb text ≈ 80 and coated ≈ 146, and 300 GSM uncoated → 110.7 lb cover, 21.4 pt, 0.544 mm.

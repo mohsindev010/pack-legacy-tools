@@ -38,7 +38,8 @@ export const dimWeightInputSchema = z
     unit: z.enum(["in", "cm"]).default("in"),
     weight: z.coerce.number().min(0, "Weight cannot be negative"),
     carriers: carrierList.default([...CARRIER_IDS]),
-    packaging: z.enum(["box", "softpack", "tube"]).default("box"),
+    /** box | softpack (poly mailer / envelope) | mylar (Mylar bag / pouch) | tube (API only). */
+    packaging: z.enum(["box", "softpack", "mylar", "tube"]).default("box"),
     contractDivisor: optionalNumber.pipe(
       z
         .number()

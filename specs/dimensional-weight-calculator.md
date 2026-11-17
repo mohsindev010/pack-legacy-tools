@@ -219,3 +219,13 @@ Property tests: billable ≥ actual (rounded); billable never decreases when any
 | Manual cross-check against official calculators | USPS: DMM cubic worked example matches. **UPS/FedEx: blocked** until their pages are supplied. |
 | UPS/FedEx rules verified against carrier pages | **Open.** The page shows a "not yet verified" note for both. |
 | Gate 2 preview approval | Needs the Vercel preview (GitHub repo + Vercel project). |
+
+---
+
+## Tester review, 17 Nov 2026
+
+- **cm / kg input** now uses each carrier's metric rule: UPS, FedEx and DHL Express divide by 5,000 cm³/kg after rounding each side up to a whole cm. UPS and FedEx round up to the next whole kg (UPS metric dimensions guide; FedEx assumed to match, not yet confirmed); DHL to the next 0.5 kg. USPS has no metric rule, so it stays in inches/lb and the widget shows the kg equivalent. Size surcharges and limits are still checked in inches; the 90 lb Large Package minimum becomes 41 kg.
+- **in / lb input**: DHL Express now uses its published 139 in³/lb (previously always metric).
+- **Packaging**: Box, Poly mailer / envelope, Mylar bag / pouch (Mylar is USPS soft packaging for cubic). Tube stays available in the API only.
+- **How it works**: the step-by-step working is always visible under the result (all tools).
+- New golden cases #19–#25.

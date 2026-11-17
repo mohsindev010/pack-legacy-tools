@@ -1,7 +1,6 @@
 // Loads every rules file and extracts its citations, so pages can print
 // "Rules effective as of ..." and Sources without anything typed by hand.
 import barcodeSpecs from "./barcode-specs.json";
-import boards from "./boards.json";
 import boxSizes from "./box-sizes.json";
 import bulkDensity from "./bulk-density.json";
 import carriers from "./carriers.json";
@@ -10,13 +9,12 @@ import flutes from "./flutes.json";
 import mylarPresets from "./mylar-presets.json";
 import o2Absorbers from "./o2-absorbers.json";
 import pallets from "./pallets.json";
-import paperGrades from "./paper-grades.json";
+import paperConversion from "./paper-conversion.json";
 import qrSpecs from "./qr-specs.json";
 import uspsCubic from "./usps-cubic.json";
 
 export const rulesFiles = {
   "barcode-specs.json": barcodeSpecs,
-  "boards.json": boards,
   "box-sizes.json": boxSizes,
   "bulk-density.json": bulkDensity,
   "carriers.json": carriers,
@@ -25,7 +23,7 @@ export const rulesFiles = {
   "mylar-presets.json": mylarPresets,
   "o2-absorbers.json": o2Absorbers,
   "pallets.json": pallets,
-  "paper-grades.json": paperGrades,
+  "paper-conversion.json": paperConversion,
   "qr-specs.json": qrSpecs,
   "usps-cubic.json": uspsCubic,
 } as const;

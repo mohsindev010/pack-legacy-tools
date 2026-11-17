@@ -1,0 +1,73 @@
+{
+  "version": "2026-11-17",
+  "note": "Approximate stock-based factors, as used by the Custom Box Makers paper weight chart (Pack Legacy tester requirement, 17 Nov 2026). The page states all results are approximate.",
+  "stocks": {
+    "text": {
+      "id": "text",
+      "name": "Text stock",
+      "gsmPerPt": 6,
+      "formula": "GSM ≈ PT × 600 / 100",
+      "lbBasis": "text",
+      "source": "Custom Box Makers: paper weight chart",
+      "sourceUrl": "https://www.customboxmakers.com/paper-weight-chart/",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": "2026-11-17"
+    },
+    "uncoated": {
+      "id": "uncoated",
+      "name": "Uncoated stock",
+      "gsmPerPt": 14,
+      "formula": "GSM ≈ PT × 1400 / 100",
+      "lbBasis": "cover",
+      "source": "Custom Box Makers: paper weight chart",
+      "sourceUrl": "https://www.customboxmakers.com/paper-weight-chart/",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": "2026-11-17"
+    },
+    "c1s": {
+      "id": "c1s",
+      "name": "C1S coated (one side)",
+      "gsmPerPt": 15,
+      "formula": "GSM ≈ PT × (1400 + 100) / 100 (medium coating)",
+      "lbBasis": "cover",
+      "source": "Custom Box Makers: paper weight chart",
+      "sourceUrl": "https://www.customboxmakers.com/paper-weight-chart/",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": "2026-11-17"
+    },
+    "c2s": {
+      "id": "c2s",
+      "name": "C2S coated (both sides)",
+      "gsmPerPt": 16.5,
+      "formula": "GSM ≈ PT × (1400 + 100 + 150) / 100 (medium + high coating)",
+      "lbBasis": "cover",
+      "source": "Custom Box Makers: paper weight chart",
+      "sourceUrl": "https://www.customboxmakers.com/paper-weight-chart/",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": "2026-11-17"
+    }
+  },
+  "lb": {
+    "text": {
+      "id": "text",
+      "name": "Text (lb)",
+      "gsmPerLb": 1.48,
+      "formula": "GSM ≈ lbs × 1.48",
+      "source": "Custom Box Makers: paper weight chart",
+      "sourceUrl": "https://www.customboxmakers.com/paper-weight-chart/",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": "2026-11-17"
+    },
+    "cover": {
+      "id": "cover",
+      "name": "Cover / coated (lb)",
+      "gsmPerLb": 2.71,
+      "formula": "GSM ≈ lbs × 2.71",
+      "source": "Custom Box Makers: paper weight chart",
+      "sourceUrl": "https://www.customboxmakers.com/paper-weight-chart/",
+      "effectiveFrom": "2026-11-17",
+      "verifiedOn": "2026-11-17"
+    }
+  },
+  "mmPerPt": 0.0254
+}

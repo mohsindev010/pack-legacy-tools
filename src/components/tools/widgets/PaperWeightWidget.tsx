@@ -1,14 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import {
-  convertPaperWeight,
-  fmtRange,
-  scaleRange,
-  unitLabel,
-  type PaperWeightValue,
-  type Range,
-} from "@core/tools/paper-weight";
+import { convertPaperWeight, UNIT_LABEL, type PaperWeightValue } from "@core/tools/paper-weight";
 import {
   PAPER_UNITS,
   paperWeightFromQuery,
@@ -17,24 +10,16 @@ import {
   type PaperUnit,
   type PaperWeightInput,
 } from "@core/schemas/paper-weight";
-import {
-  BOARD_IDS,
-  GRADE_IDS,
-  boardRules,
-  paperGradeRules,
-  type BoardId,
-  type GradeId,
-} from "@core/schemas/paper";
+import { STOCK_IDS, paperRules, type StockId } from "@core/schemas/paper";
 import { roundDisplay } from "@core/lib/round";
-import { UM_PER_MM, UM_PER_PT } from "@core/lib/units";
 import type { ToolResult } from "@core/lib/result";
 import { NumberField } from "../NumberField";
 import { UnitToggle } from "../UnitToggle";
 import { ToolForm } from "../ToolForm";
-import { ResultCard, FlagList } from "../ResultCard";
+import { ResultCard } from "../ResultCard";
 import { CompareTable } from "../CompareTable";
-import { ExplainSteps } from "../ExplainSteps";
 import { QuoteCTA } from "../QuoteCTA";
+import { HowItWorks } from "../HowItWorks";
 import { hashInputs, track } from "../analytics";
 import { readQuery, writeQuery } from "../urlState";
 import type { WidgetProps } from "./index";
@@ -43,27 +28,14 @@ import s from "../tools.module.css";
 
 const SLUG = "paper-weight-converter";
 
-type Fields = { value: string; from: PaperUnit; grade: GradeId; board: BoardId };
-const DEFAULT: Fields = { value: "300", from: "gsm", grade: "cover", board: "sbs" };
-const DP: Record<PaperUnit, number> = { gsm: 1, lb: 1, pt: 1, mm: 3, um: 0 };
+type Fields = { value: string; from: PaperUnit; stock: StockId };
+const DEFAULT: Fields = { value: "24", from: "pt", stock: "uncoated" };
+/** Display precision per unit. */
+const DP: Record<PaperUnit, number> = { gsm: 1, lb: 1, pt: 1, mm: 3 };
+const lbName = (basis: "text" | "cover") => (basis === "text" ? "lb text" : "lb cover");
 
-const gradeName = (id: GradeId) => paperGradeRules.grades[id].name;
-const boardName = (id: BoardId) => boardRules.boards[id].name;
-
-/** The typical value of a result in any unit (used when switching the from-unit). */
-function inUnit(v: PaperWeightValue, unit: PaperUnit, grade: GradeId): Range {
-  switch (unit) {
-    case "gsm":
-      return v.gsm;
-    case "lb":
-      return v.grades.find((g) => g.id === grade)!.lb;
-    case "pt":
-      return v.caliperPt;
-    case "mm":
-      return v.caliperMm;
-    case "um":
-      return v.caliperUm;
-  }
+function inUnit(v: PaperWeightValue, unit: PaperUnit): number {
+  return unit === "gsm" ? v.gsm : unit === "lb" ? v.lb : unit === "pt" ? v.pt : v.mm;
 }
 
 export function PaperWeightWidget({ slug }: WidgetProps) {
@@ -79,7 +51,7 @@ export function PaperWeightWidget({ slug }: WidgetProps) {
     if (!parsed.success) return;
     const i = parsed.data;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time read of the URL on mount
-    setFields({ value: String(i.value), from: i.from, grade: i.grade ?? "cover", board: i.board });
+    setFields({ value: String(i.value), from: i.from, stock: i.stock });
   }, []);
 
   const parsed = useMemo(() => paperWeightInputSchema.safeParse(fields), [fields]);
@@ -89,7 +61,7 @@ export function PaperWeightWidget({ slug }: WidgetProps) {
   );
   const [lastGood, setLastGood] = useState<{
     input: PaperWeightInput;
-    result: ToolResult<PaperWeightValue | null>;
+    result: ToolResult<PaperWeightValue>;
   } | null>(current);
   if (current && current !== lastGood) setLastGood(current);
   const shown = current ?? lastGood;
@@ -109,7 +81,7 @@ export function PaperWeightWidget({ slug }: WidgetProps) {
     return () => clearTimeout(t);
   }, [current]);
 
-  /** Switching the unit converts the current value (typical) so the answer stays the same paper. */
+  /** Switching the unit converts the current value, so the answer stays the same paper. */
   function switchFrom(next: PaperUnit) {
     if (next === fields.from) return;
     const v = shown?.result.value;
@@ -117,41 +89,39 @@ export function PaperWeightWidget({ slug }: WidgetProps) {
       ...cur,
       from: next,
       value: v
-        ? String(
-            Number(roundDisplay(inUnit(v, next, cur.grade).typical, DP[next]).replace(/,/g, "")),
-          )
+        ? String(Number(roundDisplay(inUnit(v, next), DP[next]).replace(/,/g, "")))
         : cur.value,
     }));
     track({ name: "tool_unit_toggled", slug: SLUG, unit: next });
   }
 
   const v = shown?.result.value ?? null;
-  const g = fields.grade;
-  const lb = v ? inUnit(v, "lb", g) : null;
-  const fromCaliper = v ? v.from === "pt" || v.from === "mm" || v.from === "um" : false;
-  const bName = boardName(fields.board);
-
-  let headline = "–";
-  const values: { label: string; value: string }[] = [];
-  if (v && lb) {
-    if (v.from === "gsm") headline = `${fmtRange(lb, 1, "lb")} ${gradeName(g).toLowerCase()}`;
-    else if (v.from === "lb") headline = fmtRange(v.gsm, 1, "gsm");
-    else {
-      headline = fmtRange(v.gsm, 0, "gsm");
-      values.push({ label: `Basis weight (${gradeName(g)})`, value: fmtRange(lb, 1, "lb") });
-    }
-    values.push(
-      { label: `Caliper (${bName})`, value: fmtRange(v.caliperPt, 1, "pt") },
-      { label: "Thickness", value: fmtRange(v.caliperMm, 3, "mm") },
-    );
-  }
+  const stockName = paperRules.stocks[fields.stock].name;
+  const all: { unit: PaperUnit; text: string }[] = v
+    ? [
+        { unit: "gsm", text: `${roundDisplay(v.gsm, 1)} GSM` },
+        { unit: "lb", text: `${roundDisplay(v.lb, 1)} ${lbName(v.lbBasis)}` },
+        { unit: "pt", text: `${roundDisplay(v.pt, 1)} pt` },
+        { unit: "mm", text: `${roundDisplay(v.mm, 3)} mm` },
+      ]
+    : [];
+  const headline = all.find((x) => x.unit === (v?.from === "gsm" ? "lb" : "gsm"))?.text ?? "–";
+  const values = all
+    .filter((x) => x.unit !== v?.from && x.text !== headline)
+    .map((x) => ({
+      label:
+        x.unit === "mm"
+          ? "Thickness"
+          : x.unit === "pt"
+            ? "Caliper"
+            : x.unit === "lb"
+              ? "Basis weight"
+              : "Grammage",
+      value: x.text,
+    }));
 
   const quoteDetails = v
-    ? `Board spec: ${roundDisplay(v.caliperPt.typical, 1)} pt ${bName} (~${roundDisplay(v.gsm.typical, 0)} gsm typical` +
-      (v.gsm.min !== v.gsm.max
-        ? `, ${roundDisplay(v.gsm.min, 0)}–${roundDisplay(v.gsm.max, 0)} range)`
-        : `, caliper ${roundDisplay(v.caliperPt.min, 1)}–${roundDisplay(v.caliperPt.max, 1)} pt)`) +
-      ". Converted with the Pack Legacy paper weight converter."
+    ? `Board spec: ${stockName}, ${roundDisplay(v.pt, 1)} pt ≈ ${roundDisplay(v.gsm, 0)} GSM ≈ ${roundDisplay(v.lb, 1)} ${lbName(v.lbBasis)} (${roundDisplay(v.mm, 3)} mm). Converted with the Pack Legacy paper weight converter.`
     : "";
 
   return (
@@ -161,51 +131,32 @@ export function PaperWeightWidget({ slug }: WidgetProps) {
           legend="Convert from"
           value={fields.from}
           onChange={switchFrom}
-          options={PAPER_UNITS.map((u) => ({ value: u, label: unitLabel(u) }))}
+          options={PAPER_UNITS.map((u) => ({ value: u, label: UNIT_LABEL[u] }))}
         />
         <NumberField
-          label="Weight or caliper"
-          unit={unitLabel(fields.from)}
+          label="Value"
+          unit={UNIT_LABEL[fields.from]}
           value={fields.value}
           onChange={(x) => set("value", x)}
           error={errors.value}
           min={0}
         />
-        <div className={f.fieldRow}>
-          <div className={f.field}>
-            <label className={f.label} htmlFor="pw-grade">
-              Paper grade (for lb)
-            </label>
-            <select
-              id="pw-grade"
-              className={f.select}
-              value={fields.grade}
-              onChange={(e) => set("grade", e.target.value as GradeId)}
-            >
-              {GRADE_IDS.map((id) => (
-                <option key={id} value={id}>
-                  {gradeName(id)}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className={f.field}>
-            <label className={f.label} htmlFor="pw-board">
-              Board type (for caliper)
-            </label>
-            <select
-              id="pw-board"
-              className={f.select}
-              value={fields.board}
-              onChange={(e) => set("board", e.target.value as BoardId)}
-            >
-              {BOARD_IDS.map((id) => (
-                <option key={id} value={id}>
-                  {boardName(id)}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className={f.field}>
+          <label className={f.label} htmlFor="pw-stock">
+            Stock type
+          </label>
+          <select
+            id="pw-stock"
+            className={f.select}
+            value={fields.stock}
+            onChange={(e) => set("stock", e.target.value as StockId)}
+          >
+            {STOCK_IDS.map((id) => (
+              <option key={id} value={id}>
+                {paperRules.stocks[id].name}
+              </option>
+            ))}
+          </select>
         </div>
       </ToolForm>
 
@@ -213,7 +164,7 @@ export function PaperWeightWidget({ slug }: WidgetProps) {
         <ResultCard
           label={
             current
-              ? `${roundDisplay(Number(fields.value), DP[fields.from])} ${unitLabel(fields.from)}${fields.from === "lb" ? ` ${gradeName(g).toLowerCase()}` : ""} is`
+              ? `${roundDisplay(Number(fields.value), DP[fields.from])} ${UNIT_LABEL[fields.from]} ${stockName.toLowerCase()} is`
               : "Fix the highlighted field (showing last result)"
           }
           headline={headline}
@@ -222,64 +173,37 @@ export function PaperWeightWidget({ slug }: WidgetProps) {
         />
         {v && (
           <CompareTable
-            caption={`The same ${fromCaliper ? "board" : "weight"} in every grade (why "80 lb" can mean different papers)`}
+            caption={`${roundDisplay(v.gsm, 1)} GSM on each stock type`}
             columns={[
-              { key: "grade", label: "Grade" },
-              { key: "basis", label: "Basis size" },
-              { key: "factor", label: "gsm per lb" },
+              { key: "stock", label: "Stock type" },
+              { key: "factor", label: "GSM per pt" },
+              { key: "pt", label: "Caliper (pt)" },
+              { key: "mm", label: "Thickness (mm)" },
               { key: "lb", label: "Basis weight" },
             ]}
-            rows={v.grades.map((r) => ({
-              grade: r.name,
-              basis: r.basis,
-              factor: roundDisplay(r.factor, 4),
-              lb: fmtRange(r.lb, 1, "lb"),
+            rows={v.stocks.map((r) => ({
+              stock: r.name,
+              factor: roundDisplay(r.gsmPerPt, 1),
+              pt: roundDisplay(r.pt, 1),
+              mm: roundDisplay(r.mm, 3),
+              lb: `${roundDisplay(r.lb, 1)} ${lbName(r.lbBasis)}`,
             }))}
-            highlightRow={v.grades.findIndex((r) => r.id === g)}
-          />
-        )}
-        {v && (
-          <CompareTable
-            caption={
-              fromCaliper
-                ? "Grammage at this caliper by board type (density range)"
-                : "Caliper at this weight by board type (density range)"
-            }
-            columns={[
-              { key: "board", label: "Board" },
-              { key: "density", label: "Density (g/cm³)" },
-              { key: "pt", label: "Caliper (pt)" },
-              { key: "mm", label: "Caliper (mm)" },
-              { key: "gsm", label: "Grammage" },
-            ]}
-            rows={v.boards.map((b) => ({
-              board: b.name,
-              density: `${roundDisplay(b.density.min, 2)}–${roundDisplay(b.density.max, 2)} (typ. ${roundDisplay(b.density.typical, 2)})`,
-              pt: fmtRange(scaleRange(b.caliperUm, 1 / UM_PER_PT), 1, "pt"),
-              mm: fmtRange(scaleRange(b.caliperUm, 1 / UM_PER_MM), 3, "mm"),
-              gsm: fmtRange(b.gsm, fromCaliper ? 0 : 1, "gsm"),
-            }))}
-            highlightRow={v.boards.findIndex((b) => b.id === fields.board)}
+            highlightRow={v.stocks.findIndex((r) => r.id === fields.stock)}
           />
         )}
         {v && (
           <div className={s.ctaRow}>
             <QuoteCTA
               label="Quote packaging in this board"
-              prefill={{
-                tool: SLUG,
-                material: boardRules.boards[fields.board].material,
-                details: quoteDetails,
-              }}
+              prefill={{ tool: SLUG, material: "Folding Paperboard", details: quoteDetails }}
             />
           </div>
         )}
         {shown && (
-          <details className={f.more}>
-            <summary>Show the working ({shown.result.explain.length} steps)</summary>
-            <ExplainSteps steps={shown.result.explain} title="Step by step" />
-            <FlagList flags={shown.result.flags.filter((x) => x.level === "info")} />
-          </details>
+          <HowItWorks
+            steps={shown.result.explain}
+            notes={shown.result.flags.filter((x) => x.level === "info")}
+          />
         )}
       </div>
     </div>

@@ -43,9 +43,10 @@ export type CarrierId = (typeof CARRIER_IDS)[number];
 export const carrierRuleSchema = z.object({
   id: z.enum(CARRIER_IDS),
   name: z.string(),
-  ruleUnit: z.enum(["in", "cm"]),
   dimDivisorIn: z.number().positive().optional(),
+  /** Metric divisor (cm³ per kg); used for cm/kg input when present. */
   dimDivisorCm: z.number().positive().nullable().optional(),
+  metricNote: z.string().optional(),
   previousDimDivisorIn: z.number().positive().optional(),
   dimRounding: z.enum(["ceil-each-side-to-whole-unit", "none"]),
   dimRoundingSince: z.string().optional(),

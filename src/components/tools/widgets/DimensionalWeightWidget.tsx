@@ -16,10 +16,10 @@ import type { ToolResult } from "@core/lib/result";
 import { NumberField } from "../NumberField";
 import { UnitToggle } from "../UnitToggle";
 import { ToolForm } from "../ToolForm";
-import { ResultCard, FlagList } from "../ResultCard";
+import { ResultCard } from "../ResultCard";
 import { CompareTable } from "../CompareTable";
-import { ExplainSteps } from "../ExplainSteps";
 import { QuoteCTA } from "../QuoteCTA";
+import { HowItWorks } from "../HowItWorks";
 import { hashInputs, track } from "../analytics";
 import { readQuery, writeQuery } from "../urlState";
 import type { WidgetProps } from "./index";
@@ -107,7 +107,13 @@ function carrierCell(
   return c ? pick(c) : "–";
 }
 
-function compareRows(v: DimWeightValue) {
+/** "4 lb", plus "(1.81 kg)" when the user works in cm/kg but the carrier bills in lb (USPS). */
+function weightText(x: number, c: CarrierResult, metricView: boolean): string {
+  const base = `${fmt(x)} ${c.weightUnit}`;
+  return metricView && c.weightUnit === "lb" ? `${base} (${fmt(x * KG_PER_LB)} kg)` : base;
+}
+
+function compareRows(v: DimWeightValue, metricView: boolean) {
   const ids = v.order;
   const row = (label: string, pick: (c: CarrierResult) => ReactNode) => {
     const r: Record<string, ReactNode> = { measure: label };
@@ -122,11 +128,11 @@ function compareRows(v: DimWeightValue) {
       (c) => `${fmt(c.divisor, 0)}${c.divisorSource === "contract" ? " (contract)" : ""}`,
     ),
     row("DIM weight", (c) =>
-      c.dimWeight === null ? "Not applied" : `${fmt(c.dimWeight)} ${c.weightUnit}`,
+      c.dimWeight === null ? "Not applied" : weightText(c.dimWeight, c, metricView),
     ),
-    row("Actual (rounded)", (c) => `${fmt(c.actual)} ${c.weightUnit}`),
+    row("Actual (rounded)", (c) => weightText(c.actual, c, metricView)),
     row("Billable weight", (c) =>
-      c.billable === null ? "Not accepted" : `${fmt(c.billable)} ${c.weightUnit}`,
+      c.billable === null ? "Not accepted" : weightText(c.billable, c, metricView),
     ),
     row("Length + girth", (c) => `${fmt(c.lengthPlusGirth, 0)} ${c.lengthUnit}`),
     row("Surcharges", (c) =>
@@ -316,7 +322,7 @@ export function DimensionalWeightWidget({ slug }: WidgetProps) {
             [
               ["box", "Box"],
               ["softpack", "Poly mailer / envelope"],
-              ["tube", "Tube / roll"],
+              ["mylar", "Mylar bag / pouch"],
             ] as const
           ).map(([val, label]) => (
             <label key={val}>
@@ -335,7 +341,7 @@ export function DimensionalWeightWidget({ slug }: WidgetProps) {
           <div>
             <NumberField
               label="Your contract divisor (UPS, FedEx)"
-              hint="Leave empty to use the published 139."
+              hint="Leave empty to use the published divisor. Applies to in / lb only."
               value={fields.contractDivisor}
               onChange={(x) => set("contractDivisor", x)}
               error={errors.contractDivisor}
@@ -385,7 +391,7 @@ export function DimensionalWeightWidget({ slug }: WidgetProps) {
           }
           headline={
             lowest
-              ? `${fmt(lowest.billable)} ${lowest.unit} with ${tiedNames}`
+              ? `${fmt(lowest.billable)} ${lowest.unit}${lu === "cm" && lowest.unit === "lb" ? ` (${fmt(lowest.billable * KG_PER_LB)} kg)` : ""} with ${tiedNames}`
               : "No carrier accepts this package"
           }
           flags={
@@ -401,7 +407,7 @@ export function DimensionalWeightWidget({ slug }: WidgetProps) {
               { key: "measure", label: "" },
               ...v.order.map((id) => ({ key: id, label: carrierRules.carriers[id].name })),
             ]}
-            rows={compareRows(v)}
+            rows={compareRows(v, lu === "cm")}
             highlightRow={5}
           />
         )}
@@ -436,15 +442,12 @@ export function DimensionalWeightWidget({ slug }: WidgetProps) {
           </div>
         )}
         {shown && (
-          <details className={f.more}>
-            <summary>Show the working ({shown.result.explain.length} steps)</summary>
-            <ExplainSteps steps={shown.result.explain} title="Step by step" />
-            <FlagList
-              flags={shown.result.flags.filter(
-                (x) => x.level === "info" && !x.code.startsWith("USPS_CUBIC"),
-              )}
-            />
-          </details>
+          <HowItWorks
+            steps={shown.result.explain}
+            notes={shown.result.flags.filter(
+              (x) => x.level === "info" && !x.code.startsWith("USPS_CUBIC"),
+            )}
+          />
         )}
       </div>
     </div>

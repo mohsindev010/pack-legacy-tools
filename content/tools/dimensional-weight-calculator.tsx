@@ -44,7 +44,7 @@ const faq = [
   },
   {
     q: "What DIM divisor do UPS, FedEx and USPS use in 2026?",
-    a: `All three use ${div} cubic inches per pound for published daily and commercial rates. USPS moved from ${usps.previousDimDivisorIn} to ${usps.dimDivisorIn} on ${d(usps.effectiveFrom)}. Negotiated contracts can use a higher divisor, which lowers DIM weight. DHL Express uses ${dhl.dimDivisorCm} cubic centimeters per kilogram.`,
+    a: `In inches and pounds, UPS, FedEx, USPS and DHL Express all use ${div} cubic inches per pound for published rates. In centimeters and kilograms, UPS, FedEx and DHL Express use ${ups.dimDivisorCm} cubic centimeters per kilogram. USPS has no metric rule; it moved from ${usps.previousDimDivisorIn} to ${usps.dimDivisorIn} on ${d(usps.effectiveFrom)}. Negotiated contracts can use a higher divisor, which lowers DIM weight.`,
   },
   {
     q: "Does USPS use dimensional weight?",
@@ -80,9 +80,10 @@ export const dimensionalWeightContent: ToolContent = {
   ogLine: `16 x 12 x 8 in, 2 lb -> UPS ${og.ups!.billable} lb, USPS ${og.usps!.billable} lb billable`,
   answer: (
     <>
-      Enter a box size and weight to see the billable weight at UPS, FedEx, USPS and DHL side by
-      side, using the 2026 rules: every side rounded up to a whole inch, a {div} divisor, and USPS
-      dimensional weight only above 1 cubic foot.
+      Enter a box, poly mailer or Mylar bag size and weight in inches/lb or cm/kg to see the
+      billable weight at UPS, FedEx, USPS and DHL side by side, using the 2026 rules: every side
+      rounded up, a{div} divisor for inches ({ups.dimDivisorCm} for cm), and USPS dimensional weight
+      only above 1 cubic foot.
     </>
   ),
   keyTakeaway: (
@@ -102,28 +103,32 @@ export const dimensionalWeightContent: ToolContent = {
       </p>
       <ol>
         <li>
-          <strong>Round each side up</strong> to the next whole inch (whole centimeter for DHL). An
-          exact whole number stays as it is.
+          <strong>Round each side up</strong> to the next whole inch, or whole centimeter when you
+          work in cm. An exact whole number stays as it is.
         </li>
         <li>
-          <strong>Multiply</strong> the rounded sides to get the volume in cubic inches.
+          <strong>Multiply</strong> the rounded sides to get the volume (cubic inches or cubic
+          centimeters).
         </li>
         <li>
           <strong>USPS only:</strong> if the volume is {n(gate)} cubic inches or less, skip
           dimensional weight and bill the actual weight.
         </li>
         <li>
-          <strong>Divide</strong> by the divisor ({div} for UPS, FedEx and USPS; {dhl.dimDivisorCm}{" "}
-          cm³/kg for DHL Express) and round up to the next whole pound (0.5 kg for DHL).
+          <strong>Divide</strong> by the divisor . In inches and pounds the divisor is {div} for
+          UPS, FedEx, USPS and DHL Express, rounded up to the next whole pound. In cm and kg it is{" "}
+          {ups.dimDivisorCm} for UPS, FedEx and DHL Express, rounded up to the next whole kg (0.5 kg
+          for DHL). USPS has no metric rule, so it is always worked in inches and pounds and shown
+          with the kg equivalent.
         </li>
         <li>
           <strong>Round the actual weight up</strong> the same way, and bill the higher of the two.
         </li>
         <li>
-          <strong>Check surcharges</strong> on the rounded size: Additional Handling, Large Package
-          or Oversize (with a {lp.minBillableLb} lb minimum billable weight), and the over-maximum
-          limits of {om.longestGt} in, {om.lengthGirthGt} in length plus girth, or {om.weightGtLb}{" "}
-          lb.
+          <strong>Check surcharges</strong> on the rounded size in inches (also for cm input):
+          Additional Handling, Large Package or Oversize (with a {lp.minBillableLb} lb minimum
+          billable weight), and the over-maximum limits of {om.longestGt} in, {om.lengthGirthGt} in
+          length plus girth, or {om.weightGtLb} lb.
         </li>
         <li>
           <strong>USPS cubic:</strong> round each side <em>down</em> to the nearest quarter inch and
@@ -194,6 +199,7 @@ export const dimensionalWeightContent: ToolContent = {
           { key: "ups", label: "UPS" },
           { key: "fedex", label: "FedEx" },
           { key: "usps", label: "USPS" },
+          { key: "dhl", label: "DHL Express" },
         ]}
         rows={[
           {
@@ -201,52 +207,74 @@ export const dimensionalWeightContent: ToolContent = {
             ups: ups.dimDivisorIn,
             fedex: fedex.dimDivisorIn,
             usps: usps.dimDivisorIn,
+            dhl: dhl.dimDivisorIn,
+          },
+          {
+            rule: "DIM divisor (cm³/kg)",
+            ups: n(ups.dimDivisorCm!),
+            fedex: n(fedex.dimDivisorCm!),
+            usps: "None (inch rules only)",
+            dhl: n(dhl.dimDivisorCm!),
+          },
+          {
+            rule: "kg rounding",
+            ups: `Up to ${ups.metricWeightStepKg} kg`,
+            fedex: `Up to ${fedex.metricWeightStepKg} kg`,
+            usps: "n/a",
+            dhl: `Up to ${dhl.metricWeightStepKg} kg`,
           },
           {
             rule: "DIM applies above",
             ups: "Any size",
             fedex: "Any size",
             usps: `${n(gate)} in³ (1 cu ft)`,
+            dhl: "Any size",
           },
           {
             rule: "Additional Handling: longest side over",
             ups: `${ah.longestGt} in`,
             fedex: `${fedex.surcharges.additionalHandling!.longestGt} in`,
             usps: "n/a",
+            dhl: "Not included",
           },
           {
             rule: "Additional Handling: length + girth over",
             ups: `${ah.lengthGirthGt} in`,
             fedex: `${fedex.surcharges.additionalHandling!.lengthGirthGt} in`,
             usps: "n/a",
+            dhl: "Not included",
           },
           {
             rule: "Additional Handling: volume over",
             ups: `${n(ah.volumeGtIn3)} in³`,
             fedex: `${n(fedex.surcharges.additionalHandling!.volumeGtIn3)} in³`,
             usps: "n/a",
+            dhl: "Not included",
           },
           {
             rule: "Large Package / Oversize: volume over",
             ups: `${n(lp.volumeGtIn3)} in³`,
             fedex: `${n(fedex.surcharges.largePackage!.volumeGtIn3)} in³`,
             usps: "n/a",
+            dhl: "Not included",
           },
           {
             rule: "Maximum weight",
             ups: `${om.weightGtLb} lb`,
             fedex: `${fedex.surcharges.overMax!.weightGtLb} lb`,
             usps: `${usps.limits!.maxWeightLb} lb`,
+            dhl: "Not included",
           },
           {
             rule: "Maximum length + girth",
             ups: `${om.lengthGirthGt} in`,
             fedex: `${fedex.surcharges.overMax!.lengthGirthGt} in`,
             usps: `${usps.limits!.maxLengthGirth} in`,
+            dhl: "Not included",
           },
         ]}
       />
-      <h3>USPS cubic tiers for poly mailers and envelopes</h3>
+      <h3>USPS cubic tiers for poly mailers, envelopes and Mylar bags</h3>
       <CompareTable
         columns={[
           { key: "tier", label: "Cubic tier" },

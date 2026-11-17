@@ -63,13 +63,25 @@ describe("tool 1 properties", () => {
     expect(calcDim(input)).toEqual(calcDim(input));
   });
 
-  it("gives the same inch-carrier result for the same box in cm and in", () => {
+  it("USPS (inch rules only) gives the same result for the same box in cm and in", () => {
     // 30.48 x 22.86 x 10.16 cm is exactly 12 x 9 x 4 in.
     const a = calcDim(parse({ l: 12, w: 9, h: 4, weight: 2.5 })).value.carriers;
     const b = calcDim(parse({ l: 30.48, w: 22.86, h: 10.16, unit: "cm", weight: 2.5 * 0.45359237 }))
       .value.carriers;
-    for (const id of ["ups", "fedex", "usps"] as const)
-      expect(b[id]!.billable).toBe(a[id]!.billable);
+    expect(b.usps!.billable).toBe(a.usps!.billable);
+    expect(b.usps!.weightUnit).toBe("lb");
+  });
+
+  it("cm input bills UPS, FedEx and DHL in kg; in input bills every carrier in lb", () => {
+    for (const c of cases(60)) {
+      const cm = calcDim(parse({ ...c, unit: "cm" })).value.carriers;
+      const inch = calcDim(parse(c)).value.carriers;
+      for (const id of ["ups", "fedex", "dhl"] as const) {
+        expect(cm[id]!.weightUnit).toBe("kg");
+        expect(cm[id]!.divisor).toBe(5000);
+      }
+      for (const id of IDS) expect(inch[id]!.weightUnit).toBe("lb");
+    }
   });
 
   it("every right-size suggestion really saves weight", () => {

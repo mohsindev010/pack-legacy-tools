@@ -166,6 +166,14 @@
 .more[open] summary {
   margin-bottom: var(--plt-space-3);
 }
+.how {
+  border-top: 1px solid var(--plt-color-border);
+  padding-top: var(--plt-space-3);
+}
+.how h3 {
+  margin: 0 0 var(--plt-space-2);
+  color: var(--plt-color-brand);
+}
 .more > div {
   display: grid;
   gap: var(--plt-space-3);

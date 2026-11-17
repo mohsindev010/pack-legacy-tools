@@ -75,7 +75,7 @@ test("quote button sends the barcode spec", async ({ page }) => {
 
 test("no serious accessibility violations", async ({ page }) => {
   await page.goto(PATH);
-  await page.getByText(/Show the working/).click();
+  await expect(page.getByRole("heading", { name: "How this result was calculated" })).toBeVisible();
   const { violations } = await new AxeBuilder({ page }).analyze();
   const serious = violations.filter((v) => v.impact === "serious" || v.impact === "critical");
   expect(serious, JSON.stringify(serious.map((v) => [v.id, v.nodes[0]?.target]))).toEqual([]);

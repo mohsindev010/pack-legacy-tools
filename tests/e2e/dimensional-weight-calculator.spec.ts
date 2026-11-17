@@ -45,7 +45,7 @@ test("recalculates live and mirrors inputs to the URL", async ({ page }) => {
 
 test("a shared link opens pre-filled, with surcharges and ties", async ({ page }) => {
   await page.goto(`${PATH}?l=31&w=24&h=24&u=in&wt=20`);
-  await expect(headline(page)).toContainText("129 lb with UPS, FedEx and USPS");
+  await expect(headline(page)).toContainText("129 lb with UPS, FedEx, USPS and DHL Express");
   await expect(headline(page)).toContainText("Large Package Surcharge");
   await expect(page.getByLabel("Length", { exact: true })).toHaveValue("31");
 });
@@ -55,6 +55,24 @@ test("switching units converts the inputs", async ({ page }) => {
   await page.getByRole("radio", { name: "cm / kg" }).check();
   await expect(page.getByLabel("Length", { exact: true })).toHaveValue("30.48");
   await expect(page.getByLabel("Actual weight")).toHaveValue("1.13");
+});
+
+test("cm / kg uses the metric divisor and shows the working", async ({ page }) => {
+  await page.goto(`${PATH}?l=50&w=40&h=30&u=cm&wt=3`);
+  const table = page.getByRole("table", { name: "Billable weight by carrier (2026 rules)" });
+  await expect(table).toContainText("5,000");
+  await expect(table).toContainText("12 kg");
+  await expect(table).toContainText("lb ("); // USPS bills in lb, shown with kg
+  await expect(page.getByRole("heading", { name: "How this result was calculated" })).toBeVisible();
+  await expect(page.getByText("DIM weight 60,000 / 5,000 = 12").first()).toBeVisible();
+});
+
+test("offers box, poly mailer and Mylar bag packaging", async ({ page }) => {
+  await page.goto(PATH);
+  for (const name of ["Box", "Poly mailer / envelope", "Mylar bag / pouch"])
+    await expect(page.getByRole("radio", { name, exact: true })).toBeVisible();
+  await page.getByRole("radio", { name: "Mylar bag / pouch" }).check();
+  await expect(page).toHaveURL(/p=mylar/);
 });
 
 test("invalid input shows a field error and keeps the last result", async ({ page }) => {

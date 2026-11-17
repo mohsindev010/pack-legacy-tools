@@ -76,7 +76,7 @@ const boxFinderEngine: ToolEngine<BoxFinderInput, unknown> = {
 
 const paperWeightEngine: ToolEngine<PaperWeightInput, unknown> = {
   schema: paperWeightInputSchema as unknown as z.ZodType<PaperWeightInput>,
-  defaultInput: paperWeightInputSchema.parse({ value: 300, from: "gsm", grade: "cover" }),
+  defaultInput: paperWeightInputSchema.parse({ value: 24, from: "pt", stock: "uncoated" }),
   run: convertPaperWeight,
   toQuery: paperWeightToQuery,
   fromQuery: paperWeightFromQuery,

@@ -18,10 +18,10 @@ import type { ToolResult } from "@core/lib/result";
 import { NumberField } from "../NumberField";
 import { UnitToggle } from "../UnitToggle";
 import { ToolForm } from "../ToolForm";
-import { ResultCard, FlagList } from "../ResultCard";
+import { ResultCard } from "../ResultCard";
 import { CompareTable } from "../CompareTable";
-import { ExplainSteps } from "../ExplainSteps";
 import { QuoteCTA } from "../QuoteCTA";
+import { HowItWorks } from "../HowItWorks";
 import { hashInputs, track } from "../analytics";
 import { readQuery, writeQuery } from "../urlState";
 import type { WidgetProps } from "./index";
@@ -329,11 +329,10 @@ export function BoxVolumeWidget({ slug }: WidgetProps) {
           </div>
         )}
         {shown && (
-          <details className={f.more}>
-            <summary>Show the working ({shown.result.explain.length} steps)</summary>
-            <ExplainSteps steps={shown.result.explain} title="Step by step" />
-            <FlagList flags={shown.result.flags.filter((x) => x.level === "info")} />
-          </details>
+          <HowItWorks
+            steps={shown.result.explain}
+            notes={shown.result.flags.filter((x) => x.level === "info")}
+          />
         )}
       </div>
     </div>

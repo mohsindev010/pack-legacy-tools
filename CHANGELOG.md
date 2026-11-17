@@ -2,6 +2,14 @@
 
 Every rules change gets an entry: what changed, why, the official source and the date (build plan, section 10.3).
 
+## 2026-11-17: Tester review fixes (tools 1, 2, 3 and all widgets)
+
+- `carriers.json`: removed `ruleUnit`. cm/kg input now uses the metric divisor 5,000 for UPS, FedEx and DHL Express (UPS/FedEx round up to whole kg, `minBillableKg` 1; UPS source: UPS metric dimensions and weight guide; FedEx whole-kg rounding not yet confirmed). DHL Express gains `dimDivisorIn` 139 and `minBillableLb` 1 (DHL rate-quote page). USPS stays inch-only.
+- Tool 1: Mylar bag / pouch packaging (USPS soft packaging); size surcharges checked in inches for any input unit; Large Package minimum converted to kg (41 kg).
+- Tool 3: replaced `paper-grades.json` and `boards.json` with `paper-conversion.json` (Custom Box Makers paper weight chart factors: pt × 6 / 14 / 15 / 16.5 by stock; lb × 1.48 text, × 2.71 cover/coated), at the tester's request.
+- All tools: the working is always shown under the result ("How this result was calculated"). Tool 2: "Board" label renamed "Board type".
+- ESLint ignores generated `coverage/`, `playwright-report/` and `test-results/`.
+
 ## 2026-11-12: Tool 6 built (box volume & CBM calculator)
 
 - `containers.json`: replaced the build-plan seed (DHL / GoFreight articles) with Evergreen Line's container information page, read and **verified** 2026-11-12. Inside sizes now in mm (`insideMm`, `doorMm`). Changes: 20 ft inside height 2,393 mm (was 2,330), 40 ft capacity 67.5 m³ (was 67.7), tare/payload 2,120/28,360 (20 ft), 4,000/26,480 (40 ft), 4,200/26,280 (40 ft HC, the 30,480 kg MGW row; Gate 1 D1). Added `settings.roadWeightInfoKg` 20,000 (D3). Validated with zod (`schemas/containers.ts`), including payload = max gross − tare.
